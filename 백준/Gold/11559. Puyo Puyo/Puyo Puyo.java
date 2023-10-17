@@ -29,25 +29,9 @@ public class Main{
 			if(!canGo) {
 				break;
 			}else {
-				
-				/*for(int i = 0;i<12;i++) {
-					for(int j=0;j<6;j++) {
-						if(v[i][j])System.out.print(1);
-						else System.out.print(0);
-					}
-					System.out.println();
-				}*/
 				go();
-				/*for(int i = 0;i<12;i++) {
-					for(int j=0;j<6;j++) {
-						System.out.print(map[i][j]);
-					}
-					System.out.println();
-				}*/
 				t++;
 			}
-			
-
 		}
 		System.out.println(t);
 	}
@@ -93,11 +77,9 @@ public class Main{
 			for(int j = 0;j<6;j++) {
 				if(map[i][j] != '.' &&!v[i][j]) {
 					queue.add(new int[] {i,j});
-					//System.out.println("i : "+i +" j : "+j);
 				}
 			}
 		}
-		
 		while(!queue.isEmpty()) {
 			int [] now = queue.poll();
 			char val = map[now[0]][now[1]];
@@ -107,6 +89,5 @@ public class Main{
 			map[ny][now[1]] = val;
 			queue.add(new int[] {ny, now[1]});
 		}
-		
 	}
 }

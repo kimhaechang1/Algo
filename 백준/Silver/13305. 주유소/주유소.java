@@ -3,19 +3,19 @@ import java.io.*;
 
 public class Main{
 	static int N;
-	static int [] len;
+	static long [] len;
 	static StringTokenizer stk;
-	static int [] cost;
+	static long [] cost;
 	public static void main(String [] args) throws Exception{
 		BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(bf.readLine());
 		stk = new StringTokenizer(bf.readLine());
-		len = new int[N-1];
+		len = new long[N-1];
 		for(int i=0;i<len.length;i++) {
 			len[i] = Integer.parseInt(stk.nextToken());
 		}
 		stk = new StringTokenizer(bf.readLine());
-		cost = new int[N];
+		cost = new long[N];
 		for(int i=0;i<N;i++) {
 			cost[i] = Integer.parseInt(stk.nextToken());
 		}
@@ -32,50 +32,23 @@ public class Main{
 		 * 제일 왼쪽에서 2(10)리터의 기름을 넣고, 2번 도시에서 4리터(8)의 기름을 넣어서 한번에 도착지점으로 가는게 가장 최적의 해다. 
 		 * */
 		
-		long min = 0;
-		// 각 정점별로 한번에 도착지 까지 도달하는데 걸리는 비용을 계산한다.
-		// 도착지는 계산 할 필요 없으므로 N-1개이다.
-		long [] dCost = new long[N-1];
-		// 거리의 누적합
-		int [] Slen = new int[N];
-		for(int i = 1;i<N;i++) {
-			Slen[i] = Slen[i-1] + len[i-1];
-		}
-		// 각 도시별 한번에 도착지까지 가는데 걸리는 비용
-		for(int i = 0;i<N-1;i++) {
-			dCost[i] = (cost[i] * (Slen[N-1] - Slen[i]));
-		}
-		
-//		System.out.println(Arrays.toString(len));
-//		System.out.println(Arrays.toString(Slen));
-//		System.out.println(Arrays.toString(dCost));
-		int idx = 0;
-		while(idx != N-1) {
-			if(idx == N-2) {
-				min+=(len[idx] * cost[idx]);
-				idx++;
-				continue;
+		// 결국 총 비용을 최소화 하려면 리터당 가격이 싼 기름을 넣어야 한다.
+		// 이전에 주유한 리터당 비용보다 싼 주유소만을 거쳐가면 가장 최소가 된다.
+		// 즉 만약 위의 그림에서 1번째 주유소(리터당 가격2)인 곳에서 한번에 도착하는게 나은지는 조금씩 이동해보면서 알 수 있다.
+		// 처음에 최소 리터당 가격은 5이고 가려하는 다음 지역까지는 첫 지역에서 주유한 만큼 가야한다.
+		// 다음은 1번 지역이고 1번지역 주유소가 더 가격이 저렴하다. 2번 주유소 까지 1번 주유소의 가격으로 이동한다.
+		// 2번 주유소는 가격을 보니 최소 리터당 가격보다 더비싸다
+		// 따라서 2번 주유소에서 충전을 더 했다고 가정하고 3번 주유소로 이동한다.
+		// 3번은 N-1이므로 도착으로 종료한다.
+		long sum = 0;
+		long min = cost[0];
+		for(int i = 0;i<N-1;i+=1) {
+			if(cost[i] < min) {
+				min = cost[i];
 			}
-			long gc = 0; // 주유소마다 최소로 채운경우의 비용
-			long tc = 0; // 현재 위치 주유소에서 해당 정점까지 한번에 가기위한 비용
-			for(int j = idx+1;j<N;j++) {
-				tc = ((Slen[j] - Slen[idx]) * cost[idx]);
-				long tgc = (Slen[j] - Slen[j-1]) * cost[j-1];
-//				System.out.println("idx : "+idx+"tc : "+(tc)+" gc : "+(gc+tgc));
-				if(j == N-1) {
-					min += tc;
-					idx = N-1;
-					break;
-				}
-				if(tc > gc+tgc) {
-					min += (gc);
-					idx= j-1;
-					break;
-				}
-				gc += tgc;
-			}
-//			System.out.println("idx : "+idx +" min : "+min);
+			
+			sum += (min * len[i]);
 		}
-		System.out.print(min);
+		System.out.print(sum);
 	}
 }

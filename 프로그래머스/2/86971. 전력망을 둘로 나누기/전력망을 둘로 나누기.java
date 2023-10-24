@@ -20,6 +20,7 @@ class Solution {
             g[e].add(s);
         }
         min = 987654321;
+        
         for(int i = 0;i<N-1;i++){
             int s = wires[i][0];
             int e = wires[i][1];

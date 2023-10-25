@@ -52,7 +52,6 @@ public class Main{
 		
 	}
 	static int dfs(int start, int h) {
-		if(h == max) return 1;
 		if(dp[start] != -1) {
 			return dp[start];
 		}

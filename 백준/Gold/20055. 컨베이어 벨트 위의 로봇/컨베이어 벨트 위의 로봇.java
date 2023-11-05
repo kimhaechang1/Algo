@@ -9,11 +9,16 @@ public class Main{
 	static int [] b;
 	public static void main(String [] args) throws Exception{
 		BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
-		// 로봇을 올리는 위치에서 올리거나(왼쪽 끝)이거나 로봇이 이동할 때 마다 칸의 내구도가 1 감소
-		// 로봇이 해당 칸으로 이동할 수 없다면 가만히 있으며
-		// 이동할 수 없는 조건은 
-		// 벨트가 한칸씩 밀리면서 이동하는데, 시계방향으로 밀린다.
-		// 내구도 0인 칸의 개수가 k개 이상이라면 진행을 멈춘다.
+		// 문제 해석본
+		// 1~2N번째의 벨트가 있다.
+		// 1초동안 일어나는 시뮬레이션 순서
+		// 1. 벨트를 2N번째부터 옆으로 민다. 이 때 2N번째는 1번째로 벨트칸이 이동한다.
+		// 2. 벨트의 이동으로 인해 벨트위의 로봇도 자연스럽게 이동된다.
+		// 3. 내리는 칸(N번째 칸)에 도달한 로봇은 무조건 떨어진다.
+		// 3-1. 동시에 생각해보면 1번째 칸은 2N번째 칸이 올라오기 때문에 항상 로봇이 없는 벨트가 올라온다.
+		// 4. 벨트위의 로봇들이 움직인다.
+		// 5. 움직일 때, N번째 칸으로 이동한 로봇들은 즉시 또 내려간다.
+		// 6. 1번째 칸에 내구도가 있다면 새 로봇을 올려보낸다.
 		stk = new StringTokenizer(bf.readLine());
 		N = Integer.parseInt(stk.nextToken());
 		K = Integer.parseInt(stk.nextToken());
@@ -48,6 +53,7 @@ public class Main{
 					r[i-1] = false;
 					r[i] = true;
 					b[i]--;
+					r[N] = false;
 				}
 			}
 			// 올리는칸에 로봇 올리기

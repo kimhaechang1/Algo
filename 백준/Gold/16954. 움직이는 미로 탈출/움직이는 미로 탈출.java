@@ -49,37 +49,20 @@ public class Main{
 					map[ny][nx] = 'P';
 				}
 			}
-			/*System.out.println("----사람 이동----");
-			for(int i= 0;i<8;i++) {
-				for(int j= 0;j<8;j++) {
-					System.out.print(map[i][j]+" ");
-				}
-				System.out.println();
-			}*/
 			
 			int wsize = w.size();
 			for(int i= 0;i<wsize;i++) {
 				int [] now = w.poll();
-				//System.out.println("now [0] : "+now[0] +" now[1] : "+now[1]);
 				int ny = now[0] + dy[2];
 				
 				if(ny >= N) {
 					map[now[0]][now[1]] = '.';
 					continue;
 				}
-				//System.out.println(ny+" "+now[1]);
 				map[now[0]][now[1]] = '.';
 				map[ny][now[1]] = '#';
 				w.add(new int[] {ny, now[1]});
 			}
-			/*System.out.println("----벽 내려옴----");
-			for(int i= 0;i<8;i++) {
-				for(int j= 0;j<8;j++) {
-					System.out.print(map[i][j]+" ");
-				}
-				System.out.println();
-			}*/
-			
 		}
 		System.out.println(ans);
 	}
@@ -107,7 +90,6 @@ public class Main{
 				}
 			}
 		}
-		//System.out.println("minP : "+minP +", minW : "+minW);
 		if(minW == -1) {
 			ans = 1;
 			return false;

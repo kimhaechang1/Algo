@@ -19,7 +19,8 @@ class Solution {
             }
         }
         Iterator<Integer> iter = map1.values().iterator();
-        
+        // 옷을 고르지 않는 경우를 +1 해주고 전체 경우의 수 에서 공집합 경우를 빼주면 정답
+        // 왜냐하면 각 카테고리 별로 의상의 이름이 전혀 겹치지 않는다는것이 보장되기 때문
         answer = 1;
         while(iter.hasNext()){
             answer *= (iter.next() +1);

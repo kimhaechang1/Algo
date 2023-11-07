@@ -28,17 +28,13 @@ public class Main{
 		// 누적합? 사용하면 좀 편할라나
 		// 왼쪽 위 대각선 누적합을 사용하면 될듯
 		int [][] suff1 = new int[N][M]; // 세로 누적합
-		
-		int [][] suff2 = new int[N][M]; // 대각선 누적합
 		for(int i= 0;i<N;i++) {
 			suff1[i] = map[i].clone();
-			suff2[i] = map[i].clone();
 		}
 		
 		// 점화식
 		// 어떤 좌표 (a,b)에 대하여 수확한 물고기의 합은
-		//res = suff1[a][b] + suff2[a][b]- map[a][b] 가 된다.
-		// 각 쿼리에 대하여 O(1)의 시간복잡도로 처리 가능
+		// 아래방향 누적합 구한거에 대각선 누적합 구한 결과의 suff1 배열의 (a, b)가 된다.
 		for(int i= 0;i<M;i++) {
 			for(int j= 1;j<N;j++) {
 				suff1[j][i] = suff1[j-1][i]+suff1[j][i];

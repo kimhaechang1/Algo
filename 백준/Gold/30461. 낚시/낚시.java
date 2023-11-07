@@ -44,9 +44,6 @@ public class Main{
 				suff1[j][i] = suff1[j-1][i]+suff1[j][i];
 			}
 		}
-//		for(int i= 0;i<N;i++) {
-//			System.out.println(Arrays.toString(suff1[i]));
-//		}
 		
 		int sy = 0;
 		int sx = 0;
@@ -82,7 +79,6 @@ public class Main{
 			stk = new StringTokenizer(bf.readLine());
 			int a = Integer.parseInt(stk.nextToken())-1;
 			int b = Integer.parseInt(stk.nextToken())-1;
-//			int res =  + suff2[a][b]- map[a][b];
 			sb.append(suff1[a][b]).append("\n");
 		}
 		System.out.print(sb);

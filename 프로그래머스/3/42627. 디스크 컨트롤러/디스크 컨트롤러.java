@@ -20,9 +20,11 @@ class Solution {
             while(idx!= jobs.length && jobs[idx][0] <= pres){
                 pq.add(jobs[idx++]);
             }
+            
             if(pq.isEmpty()){
-                pres = jobs[idx][0]; 
-                // 다음 작업 시작시간을 넣어서 관리
+                // pq가 비어있다는 뜻은 현재 마지막으로 작업끝난 시간보다
+                // 더 뒤에 작업 요청이 들어오는 작업이 있다는 의미
+                pres = jobs[idx][0];
             }else{
                 // 비어있지 않다는것은 도중에 들어온것들에 대하여
                 // 수행시간이 적은것 부터 처리

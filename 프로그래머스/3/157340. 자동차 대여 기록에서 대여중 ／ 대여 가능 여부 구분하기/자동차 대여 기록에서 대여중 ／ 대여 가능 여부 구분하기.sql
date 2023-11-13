@@ -3,7 +3,8 @@
 #FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
 #GROUP BY CAR_ID
 #ORDER BY CAR_ID DESC;
-
+# 10/16을 기준으로 대여중/대여가능으로 나뉘는데
+# 결국 최종적으로 대여중인가 대여가능인가를 나눈것들 중에 가장 최종적인 값이 무엇인가? 가 중요함
 SELECT CAR_ID, 
 max(CASE
 WHEN START_DATE <= "2022-10-16" AND END_DATE >= "2022-10-16" 

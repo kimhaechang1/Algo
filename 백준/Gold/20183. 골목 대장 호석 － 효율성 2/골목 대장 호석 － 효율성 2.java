@@ -42,36 +42,35 @@ public class Main{
 		boolean [] v = new boolean[N+1];
 		long [] cost = new long[N+1];
 		Arrays.fill(cost, Long.MAX_VALUE);
+		long [] edges = new long[N+1];
+		Arrays.fill(edges, Long.MAX_VALUE);
 		cost[A] = 0;
+		edges[A] = 0;
 		PriorityQueue<long []>pq = new PriorityQueue<>((a, b)->{
-			if(a[1] == b[1]) {
-				return Long.compare(a[1],b[1]);
-			}
 			return Long.compare(a[2], b[2]);
 		});
 		pq.add(new long [] {A, cost[A], Integer.MIN_VALUE});
-		long min = Long.MAX_VALUE;
+		int cnt = 0;
 		while(!pq.isEmpty()) {
 			long [] now = pq.poll();
 			if(v[(int)now[0]]) continue;
-			v[(int)now[0]] = true;
 			cost[(int)now[0]] = now[1];
-			if((int)now[0] == B) {
-				min = Math.min(min,now[2]);
-				break;
-			}
+			if(++cnt == N+1) break;
 			for(Node node : g[(int)now[0]]) {
 				if(!v[node.e] && cost[node.e] > node.w + now[1]) {
 					if(node.w + now[1] > C) continue;
+					if(Math.max(node.w, now[2]) > edges[node.e]) continue;
 					cost[node.e] = node.w + now[1];
+					edges[node.e] = Math.max(node.w, now[2]);
 					pq.add(new long[] {node.e , cost[node.e], Math.max(now[2], node.w)});
 				}
 			}
 		}
+		//System.out.println(Arrays.toString(edges));
 		if(cost[B] == Long.MAX_VALUE) {
 			System.out.println(-1);
 		}else {
-			System.out.println(min);
+			System.out.println(edges[B]);
 		}
 		
 	}

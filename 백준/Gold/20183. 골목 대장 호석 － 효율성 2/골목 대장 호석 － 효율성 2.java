@@ -16,7 +16,6 @@ public class Main{
 			this.w = w;
 		}
 	}
-	static int max = 987654321;
 	static StringTokenizer stk;
 	static boolean[] v;
 	public static void main(String [] args) throws Exception{
@@ -49,12 +48,13 @@ public class Main{
 		PriorityQueue<long []>pq = new PriorityQueue<>((a, b)->{
 			return Long.compare(a[2], b[2]);
 		});
-		pq.add(new long [] {A, cost[A], Integer.MIN_VALUE});
+		pq.add(new long [] {A, cost[A], edges[A]});
 		int cnt = 0;
 		while(!pq.isEmpty()) {
 			long [] now = pq.poll();
 			if(v[(int)now[0]]) continue;
-			if(++cnt == N+1) break;
+			v[(int)now[0]] = true;
+			if(++cnt == N) break;
 			for(Node node : g[(int)now[0]]) {
 				if(!v[node.e] && node.w+now[1] <= C && edges[node.e] > Math.max(node.w, now[2]) ) {
 					cost[node.e] = node.w + now[1];
@@ -63,8 +63,7 @@ public class Main{
 				}
 			}
 		} 
-		//System.out.println(Arrays.toString(edges));
-		if(cost[B] == Long.MAX_VALUE) {
+		if(edges[B] == Long.MAX_VALUE) {
 			System.out.println(-1);
 		}else {
 			System.out.println(edges[B]);

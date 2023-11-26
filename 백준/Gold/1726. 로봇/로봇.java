@@ -74,7 +74,7 @@ public class Main{
 			}else {
 				d = 1;
 			}
-			if(v[now[0]][now[1]][d] >= now[3]+1) {
+			if(v[now[0]][now[1]][d] > now[3]+1) {
 				v[now[0]][now[1]][d] =now[3]+1;
 				queue.add(new int[] {now[0], now[1], d, now[3]+1});
 			}
@@ -98,7 +98,7 @@ public class Main{
 				now[0]+=dy[now[2]];
 				now[1]+=dx[now[2]];
 				if(now[0] < 0 || now[0] >= N || now[1] < 0 || now[1] >= M || map[now[0]][now[1]] == 1) break;
-				if(v[now[0]][now[1]][now[2]] >= now[3]+1) {
+				if(v[now[0]][now[1]][now[2]] > now[3]+1) {
 					v[now[0]][now[1]][now[2]] = now[3]+1;
 					queue.add(new int[] {now[0], now[1], now[2], now[3]+1});
 				}

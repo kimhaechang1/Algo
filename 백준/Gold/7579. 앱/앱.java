@@ -43,7 +43,7 @@ public class Main{
 		
 		// dp에서 문제가 잘 생각이 안난다면 기준점을 바꿔보도록 하자.
 		for(int i= 1;i<=N;i++) {
-			for(int j=1;j<=sum;j++) {
+			for(int j=0;j<=sum;j++) {
 				if(m[i] > j) {
 					dp[i][j] = dp[i-1][j];
 				}else {
@@ -53,7 +53,7 @@ public class Main{
 		}
 		int res = 999999999;
 		l : for(int i= 1;i<=N;i++) {
-			for(int j=1;j<=sum;j++) {
+			for(int j=0;j<=sum;j++) {
 				if(dp[i][j] >= M) {
 					res = Math.min(res, j);
 					

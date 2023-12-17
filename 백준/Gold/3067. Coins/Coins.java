@@ -21,6 +21,7 @@ public class Main{
 			t = Integer.parseInt(bf.readLine());
 			dp = new int[t+1];
 			dp[0] = 1;
+			// 아무런 동전을 안쓰면 0원도 가짓수로 포함할 수 있다.
 			for(int i = 0;i<N;i++) {
 				for(int j = arr[i];j<=t;j++) {
 					dp[j] += (dp[j-arr[i]]);

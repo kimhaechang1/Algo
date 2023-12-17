@@ -62,9 +62,13 @@ public class Main{
 		return true;
 	}
 	static void dfs(int depth, int sy, int sx, int cnt) {
+        
 		if(cnt > 3) {
 			return;
 		}
+        if(cnt > min){
+            return;
+        }
 		if(depth == n) {
 			if(min > cnt) {
 				min = Math.min(cnt, min);

@@ -33,19 +33,12 @@ public class Main{
 		for(int i = 0;i<m;i++) {
 			commands[i] = bf.readLine();
 		}
-		/*for(int i = 0;i<b;i++) {
-			for(int j = 0;j<a;j++) {
-				System.out.print(map[i][j]+" ");
-			}
-			System.out.println();
-		}*/
 		String res = "OK";
 		t : for(String command : commands) {
 			stk = new StringTokenizer(command);
 			int idx = Integer.parseInt(stk.nextToken())-1;
 			String com = stk.nextToken();
 			int step = Integer.parseInt(stk.nextToken());
-			//System.out.println(command);
 			int sy = init[idx][0];
 			int sx = init[idx][1];
 			
@@ -76,12 +69,8 @@ public class Main{
 					}
 					break;
 				case "F":
-					//System.out.println("before : sy : "+sy +" sx : "+sx);
-					//System.out.println("before : sd : "+sd);
 					sy += dy[sd];
 					sx += dx[sd];
-					//System.out.println("after : sy : "+sy +" sx : "+sx);
-					//System.out.println(sy+" "+sx);
 					if(sy >= b || sy < 0  || sx >= a || sx < 0) {
 						StringBuilder sb =new StringBuilder();
 						sb.append("Robot").append(" ").append(idx+1).append(" ").append("crashes").append(" ").append("into").append(" ").append("the").append(" ").append("wall");
@@ -89,7 +78,6 @@ public class Main{
 						break t;
 					}
 					if(map[sy][sx] != 0) {
-						//System.out.println("map[sy][sx] : "+map[sy][sx]);
 						StringBuilder sb =new StringBuilder();
 						sb.append("Robot").append(" ").append(idx+1).append(" ").append("crashes").append(" ").append("into").append(" ").append("robot").append(" ").append(map[sy][sx]);
 						res = sb.toString();
@@ -103,14 +91,6 @@ public class Main{
 			init[idx][1] = sx;
 			
 			map[sy][sx] = idx+1;
-			/*for(int i = 0;i<b;i++) {
-				for(int j = 0;j<a;j++) {
-					System.out.print(map[i][j]+" ");
-				}
-				System.out.println();
-				
-			}
-			System.out.println("==================");*/
 		}
 		System.out.println(res);
 	}

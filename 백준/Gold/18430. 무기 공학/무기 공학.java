@@ -46,6 +46,8 @@ public class Main{
 		System.out.print(max);
 	}
 	static void dfs(int sy, int sx, int sum) {
+		// 격자점에서 백트래킹 할 때에는
+		// 격자점을 하나씩 이동시키는 경우엔 굳이 dfs로 재탐색 할 필요가 없다.
 		if(sx == m) {
 			sy++;
 			sx = 0;

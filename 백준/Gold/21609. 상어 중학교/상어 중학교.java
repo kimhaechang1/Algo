@@ -9,12 +9,13 @@ public class Main{
     static int [] dy = {-1,1,0,0};
     static int [] dx = {0,0,-1,1};
     static class Group{
-        int cnt;
-        ArrayList<int[]> list;
-        int y;
-        int x;
-        int rcnt;
-        public Group() {}
+    	// 그룹이 가져야 할 정보
+        int cnt; // 그룹 칸 수
+        ArrayList<int[]> list; // 그룹 내 좌표점들
+        int y; // 기준 블록 y 좌표 
+        int x; // 기준 블록 x 좌표 
+        int rcnt; // 그룹 내 무지개 블록 개수
+        public Group() {} 
         public Group(int cnt, ArrayList<int[]> list, int y, int x, int rcnt) {
             this.cnt = cnt;
             this.y = y;
@@ -70,6 +71,8 @@ public class Main{
         System.out.println(s);
     }
     static boolean chk() {
+    	// m이하의 자연수를 가진 칸의 4방면중에 
+    	// 하나라도 그룹으로 포함될 칸이 있다면 진행하면 됨
         for(int i = 0;i<n;i++) {
             for(int j = 0;j<n;j++) {
                 if(map[i][j] <= 0) continue;
@@ -92,18 +95,23 @@ public class Main{
                 if(map[i][j] == -2) continue;
                 if(map[i][j] <= 0) continue;
                 Group g = getGroup(i,j, v);
+                // 가져온 그룹의 크기가 2미만이면 그룹으로 인정 못함
                 if(g.cnt < 2) {
                     continue;
                 }
+                // 먼저 그룹의 칸 개수 비교
                 if(max.cnt < g.cnt) {
                     max = g;
                 }else if(max.cnt == g.cnt) {
+                	// 칸개수 같다면 무지개 칸 개수 비교
                     if(max.rcnt < g.rcnt) {
                         max = g;
                     }else if(max.rcnt == g.rcnt) {
+                    	// 무지개 칸도 같다면 y가 더 큰쪽
                         if(max.y < g.y) {
                             max = g;
                         }else if(max.y == g.y) {
+                        	// y도 같다면 x가 더 큰쪽
                             if(max.x < g.x) {
                                 max = g;
                             }
@@ -115,6 +123,7 @@ public class Main{
         return max;
     }
     static Group getGroup(int sy, int sx, boolean [][] v) {
+    	// 덩어리 찾기 => flood fill
         Queue<int[]> queue = new ArrayDeque<>();
         ArrayList<int []> pos =new ArrayList<>();
         v[sy][sx] = true;
@@ -145,17 +154,22 @@ public class Main{
             }
             return o1[0] - o2[0];
         });
+        // 기준 좌표 찾기 => 가장 왼쪽 위
         int [] gi = pos.get(0);
         int rcnt = zeros.size();
+        // 무지개 좌표는 재활용 해야함 => 다른 그룹에서도 포함 가능
+        // 그러면서 해당 그룹에 무지개 좌표 개수 => rcnt
         while(!zeros.isEmpty()) {
             int [] now = zeros.poll();
             pos.add(new int[] {now[0], now[1]});
             v[now[0]][now[1]] = false;
         }
+        // 만들어진 그룹 객체 하나 리턴하기
         Group res = new Group(pos.size(), pos, gi[0], gi[1], rcnt);
         return res;
     }
     static int getScore(Group group) {
+    	// 스코어를 얻으면서 동시에 절대 나오지않는 수로 매김 => -2
         int c = group.cnt * group.cnt;
         for(int [] pos : group.list) {
             map[pos[0]][pos[1]] = -2;
@@ -163,6 +177,8 @@ public class Main{
         return c;
     }
     static void go() {
+    	// 중력 작용에 있어서 단순히 장애물 없이 떨어지는거라면 temp배열 이용
+    	// 그게 아니라면 Queue이용하기
         for(int i = 0;i<n;i++) {
             Queue<int []> queue = new ArrayDeque<>();
             for(int j = n-2;j>-1;j--) {
@@ -192,12 +208,15 @@ public class Main{
     }
     static void rotate() {
         int [][] temp = new int[n][n];
+        // 반시계방향 일 때에는 n-1-j, i = i, j
+        // 시계방향 일 때에는 j, n-1-i = i, j
         for(int i = 0;i<n;i++) {
             for(int j = 0;j<n;j++) {
                 temp[n-1-j][i] = map[i][j];
             }
             
         }
+        // 돌린 결과 반영하기
         for(int i = 0;i<n;i++) {
             map[i] = temp[i].clone();
         }

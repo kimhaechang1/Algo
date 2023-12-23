@@ -8,6 +8,7 @@ public class Main {
 	static StringTokenizer stk;
 	public static void main(String[] args) throws Exception{
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 		N = Integer.parseInt(bf.readLine());
 		arr = new int[N];
 		int []  dp = new int[N+1];
@@ -40,10 +41,13 @@ public class Main {
 				--t;
 			}
 		}
-		System.out.println(LIS+1);
+        
+        
+		sb.append(LIS+1).append("\n");
 		while(!res.isEmpty()) {
-			System.out.print(res.pop()+" ");
+			sb.append(res.pop()+" ");
 		}
+        System.out.print(sb);
 		
 		
 	}

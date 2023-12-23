@@ -21,12 +21,15 @@ public class Main{
 			}
 		}
 		max = 0;
-		//printMap(map);
-		//printFishList(fish);
 		// 상어가 위치에 이동하면 해당 물고기를 먹고 상어의 이동방향은 먹은 물고기로 진행됨
 		// 그다음에 물고기들이 이동함
 		// 물고기이동은 1번부터 순서대로이며, 다른 물고기가 있으면 서로 위치를 스왑
 		// 상어가 있는 칸도 이동 못함
+		
+		// 1. 원복을 시키기 힘들다면, 복사하는게 좋음
+		// 2. 물고기의 위치만 교환되는것이지 방향은 교환시키지 않음!
+		// 3. map과 fish정보의 싱크를 맞춰야함
+		
 		dfs(0, 0, map, fish, 0);
 		System.out.println(max);
 	}
@@ -47,14 +50,6 @@ public class Main{
 			dfs(ny, nx, copiedMap, copiedFish, sum);
 		}
 		
-	}
-	static void printMap(int [][] map) {
-		for(int i = 0;i<4;i++) {
-			for(int j = 0;j<4;j++) {
-				System.out.print(map[i][j]+" ");
-			}
-			System.out.println();
-		}
 	}
 	static void fishMove(int sharky, int sharkx, int [][] fish, int [][] map) {
 		// todo : 물고기 이동시키기
@@ -78,7 +73,6 @@ public class Main{
 						flg = true;
 						break;
 					}
-					
 				}
 				if(flg) {
 					// todo : 다른 물고기와 위치 교환
@@ -128,10 +122,5 @@ public class Main{
 			cp[i] = map[i].clone();
 		}
 		return cp;
-	}
-	static void printFishList(int [][] fish) {
-		for(int i = 1;i<17;i++) {
-			System.out.println(i+"번째 물고기 정보 : "+Arrays.toString(fish[i]));
-		}
 	}
 }

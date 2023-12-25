@@ -11,7 +11,7 @@ public class Main{
 	static int [][][] sharkPriority;
 	static int [] dy = {0,-1,1,0,0};
 	static int [] dx = {0,0,0,-1,1};
-	static PriorityQueue<Integer>[][] pq;
+	static int [][] temp;
 	static int [][][] smell;
 	public static void main(String [] args) throws Exception{
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
@@ -57,29 +57,19 @@ public class Main{
 		// 아무 냄세가 없는 칸이 여럿 혹은 자기 냄세가 남아있는 칸이 여럿이라면
 		// 특정한 우선순위를 따름
 		int time = 0;
-		pq = new PriorityQueue[n][n];
-		init();
 		while(time < 1000) {
 			if(isOne()) break;
 			time++;
-			sharkMove();
 			smellMark();
-			mark();
+			sharkMove();
 			smellDown();
 		}
 		System.out.println(isOne() ? time : -1);
-		
-	}
-	static void init() {
-		for(int i = 0;i<n;i++) {
-			for(int j = 0;j<n;j++) {
-				pq[i][j] = new PriorityQueue<>();
-			}
-		}
 	}
 	static void sharkMove() {
 		// todo : 우선순위의 결과에따른 shark 이동 후 위치를 큐에 담음
 		boolean flag = true;
+		temp = new int[n][n];
 		for(int i = 1;i<m+1;i++) {
 			if(shark[i][2] == -1) continue;
 			if(i > 1) flag = false;
@@ -121,8 +111,15 @@ public class Main{
 				}
 			}
 			shark[i][2] = nd;
-			pq[ty][tx].add(i);
+			if(temp[ty][tx] > 0) {
+				shark[i][2] = -1;
+			}else {
+				temp[ty][tx] = i;
+				shark[i][0] = ty;
+				shark[i][1] = tx;
+			}
 		}
+		
 	}
 	static void smellMark() {
 		// todo : 냄세 시간과 어떤 상어가 냄세를 남겼는지를 마킹 : k로 초기화
@@ -130,34 +127,6 @@ public class Main{
 			if(shark[i][2] == -1) continue;
 			smell[shark[i][0]][shark[i][1]][i] = k;
 		}
-	}
-	static void mark() {
-		// todo : 상어의 결정된 위치로 지도에 갱신
-		// 이 때 두 상어가 같이 있는경우 pq에서 나오는 최초상어만 꺼내고 나머지는 죽음 처리
-		// 죽은 상어는 지도상에 남기지 않고, sharkDir을 -1로 처리
-		// 추가적으로 지도에 갱신하면서 1번 상어를 제외하고 다른상어도 이동에 성공하였다면 flg를 건드리지 않음
-		int [][] temp = new int[n][n];
-		for(int i = 0;i<n;i++) {
-			for(int j = 0;j<n;j++) {
-				if(pq[i][j].size() > 1) {
-					int sharkNumber = pq[i][j].poll();
-					temp[i][j] = sharkNumber;
-					shark[sharkNumber][0] = i;
-					shark[sharkNumber][1] = j;
-					while(!pq[i][j].isEmpty()) {
-						sharkNumber = pq[i][j].poll();
-						shark[sharkNumber][2] = -1;
-					}
-				}else {
-					if(pq[i][j].isEmpty()) continue;
-					int sharkNumber = pq[i][j].poll();
-					temp[i][j] = sharkNumber;
-					shark[sharkNumber][0] = i;
-					shark[sharkNumber][1] = j;
-				}
-			}
-		}
-		map = temp;
 	}
 	static void smellDown() {
 		// todo : 상어의 이동이 1번 일어났으므로 냄세를 모두 1씩 감소
@@ -178,18 +147,5 @@ public class Main{
 			}
 		}
 		return true;
-	}
-	static void printMap(int [][] map) {
-		for(int i = 0;i<n;i++) {
-			for(int j= 0;j<n;j++) {
-				System.out.print(map[i][j]+" ");
-			}
-			System.out.println();
-		}
-	}
-	static void printShark() {
-		for(int i= 1;i<m+1;i++) {
-			System.out.println(i+" 번째 상어 정보 : "+Arrays.toString(shark[i]));
-		}
 	}
 }

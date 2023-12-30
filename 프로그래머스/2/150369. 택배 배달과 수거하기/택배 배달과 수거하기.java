@@ -12,8 +12,7 @@ class Solution {
         int pi = n-1;
         int start = -1;
         while(true) {
-        	dsum = 0;
-        	psum = 0;
+        	
         	start = -1;
         	for(int i = di;i>-1;i--) {
                 if(dsum == cap){
@@ -52,6 +51,8 @@ class Solution {
         	}
         	if(dsum > 0 ||  psum > 0) {
         		answer += (start + 1) * 2;
+                dsum = 0;
+        	    psum = 0;
         	}
         	if(start == -1) {
         		break;

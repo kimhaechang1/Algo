@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 //  2023 12 31 00:48
-//  2023 12 31 
+//  2023 12 31 01:13
 class Solution {
     static int maxJ;
     static int maxV;
@@ -16,7 +16,6 @@ class Solution {
                 int sum = 0;
                 int dp = user[0];
                 int l = user[1];
-                //System.out.println(Arrays.toString(user));
                 for(int i = 0;i<m;i++){
                     if(res[i] >= dp){
                         sum += (e[i] - (int)(e[i] * ((double)res[i] / 100)));
@@ -36,7 +35,6 @@ class Solution {
             }else if(maxJ == cnt){
                 maxV = Math.max(maxV, total);
             }
-            //System.out.println("==================");
             return;
         }
         

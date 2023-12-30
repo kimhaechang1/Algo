@@ -100,6 +100,9 @@ class Solution {
         res = new char[k];
         int dis = Math.abs((y - 1) - (r - 1)) + Math.abs((x - 1) - (c - 1));
         if(dis > k || ((k-dis)) % 2 == 1){
+            // 이동에 제한수치 보다 최단거리가 더 길때
+            // 그리고 최단거리까지 갔을때 남은 이동가능한 횟수가 홀수인 경우
+            // 홀수면 안되는 이유가 그기서부터는 좌우 반복이거나 위아래 반복해야하는데 홀수면 되돌아 갈 수 없기때문
             answer = "impossible";
         }else{
             dfs(0, n, m, y-1, x-1, r-1, c-1, k);    

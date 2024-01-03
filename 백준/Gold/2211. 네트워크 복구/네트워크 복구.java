@@ -18,6 +18,13 @@ public class Main {
     static ArrayList<int []> list;
     public static void main(String [] args) throws Exception {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        // 문제 뜻 그대로 해석하면 MST로 해석하기 쉽다.
+        // 왜냐하면 최단 거리로 모든 노드들에게 도착할때의 간선들을 고르라는 거라고 해석할 수도 있음
+        // 하지만 MST는 최소비용이지 최단거리를 만들어 주진 않는다는점! 잊으면 안됨
+        // 이 문제에서의 요구사항은
+        // BFS로 최단거리로 이동하면서 다익으로 구한 1~특정정점까지의 최단거리와 동일해지는 간선들을 구하는 것
+        // 즉 결국 다익스트라로 1에서 각 정점까지의 최단거리를 구할때 사용한 간선들을 중복없이 구하는 것
+        
         stk = new StringTokenizer(bf.readLine());
         n = Integer.parseInt(stk.nextToken());
         m = Integer.parseInt(stk.nextToken());

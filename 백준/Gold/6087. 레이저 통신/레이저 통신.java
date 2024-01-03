@@ -8,6 +8,8 @@ public class Main {
     static int h;
     static int [][] start;
     public static void main(String [] args) throws Exception{
+        // 다익스트라로 접근했더니 틀린다.
+        // 이유 : 거울 설치는 더 적더라도 거리가 훨씬 더 멀수도 있기 때문
         BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
         stk = new StringTokenizer(bf.readLine());
         w = Integer.parseInt(stk.nextToken());

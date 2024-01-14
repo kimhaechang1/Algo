@@ -51,7 +51,7 @@ class Solution {
                         v[v1][now[1]][now[2]][((now[3] | (1 << v1)))] = true;
                         queue.add(new int[]{v1, now[1], now[2], now[3]});
                     }
-                    if(((now[3] & (1 << v1)) == 0) && !v[v1][now[1]+1][now[2]][((now[3] | (1 << v1)))] && info[v1] == 0){
+                    if(((now[3] & (1 << v1)) == 0) && info[v1] == 0 && !v[v1][now[1]+1][now[2]][((now[3] | (1 << v1)))]){
                         v[v1][now[1]+1][now[2]][((now[3] | (1 << v1)))] = true;
                         queue.add(new int[]{v1, now[1]+1, now[2], (now[3] | (1 << v1))});
                     }

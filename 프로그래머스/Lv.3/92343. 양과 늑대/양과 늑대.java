@@ -1,5 +1,5 @@
 // start 2024 01 14 10:30
-// end
+// end 2024 01 14 11:41
 import java.util.*;
 import java.io.*;
 
@@ -16,13 +16,11 @@ class Solution {
             if(info[i] == 0) sc++;
             else wc++;
         }
-        //System.out.println("sc : "+sc+" wc : "+wc);
         int visit = 1;
         int sum = 0;
         for(int i= 0;i<n;i++) {
         	sum += (1 << i);
         }
-        //System.out.println(sum);
         boolean [][][][] v = new boolean[n][sc+1][wc+1][sum+1];
         
         Queue<int []> queue = new ArrayDeque<>();
@@ -31,8 +29,6 @@ class Solution {
         v[0][1][0][visit] = true;
         while(!queue.isEmpty()){
             int [] now = queue.poll();
-            //printData(now, n);
-            //System.out.println("=========================");
             max = Math.max(max, now[1]);
             for(int i = 0;i<n-1;i++){
                 int v1 = edges[i][0];

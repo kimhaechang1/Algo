@@ -32,15 +32,13 @@ public class Main{
 			g[e].add(new Node(s, v));
 		}
 		// K 개의 선에서는 공짜로 연결해준다.
-		// 
+		// 여러 간선들을 고르는 중에 k개를 할인하고 나서 가장 비싼 녀석이 총 비용이 된다.
+		// 근데 k개를 할인한단 의미는 결국 어떤 값보다 큰 간선이 k개 있어야 한다는 의미
 		long s = 0;
 		long e = Integer.MAX_VALUE;
 		long value = Integer.MAX_VALUE;
 		while(s <= e) {
 			long mid = (s + e) / 2;
-			if(mid == 4) {
-				
-			}
 			if(test(mid)) {
 				e = mid -1;
 				value = Math.min(mid, value);
@@ -51,7 +49,6 @@ public class Main{
 		System.out.println(value == Integer.MAX_VALUE ? -1 : value);
 	}
 	static boolean test(long mid){
-		//System.out.println("mid : "+mid);
 		PriorityQueue<long []> pq = new PriorityQueue<>((a ,b)->{
 			return Long.compare(a[2],b[2]);
 		});
@@ -63,9 +60,6 @@ public class Main{
 		int cnt = 0;
 		while(!pq.isEmpty()) {
 			long [] now = pq.poll();
-//			if(mid == 4) {
-//				System.out.println(Arrays.toString(now));
-//			}
 			if((int)now[0] == n) {
 				return true;
 			}

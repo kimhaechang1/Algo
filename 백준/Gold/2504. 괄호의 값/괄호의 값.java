@@ -19,7 +19,9 @@ public class Main {
 					while(true) {
 						if(stack.isEmpty() || (stack.peek()).equals("[")) {
 							isError = true;
-							break;
+                            System.out.println(0);
+                            return;
+							//break;
 						}
 						if((stack.peek()).equals("(")) {
 							stack.pop();
@@ -39,7 +41,9 @@ public class Main {
 					while(true) {
 						if(stack.isEmpty() || (stack.peek()).equals("(")) {
 							isError = true;
-							break;
+                            System.out.println(0);
+                            return;
+							//break;
 						}
 						if((stack.peek()).equals("[")) {
 							stack.pop();

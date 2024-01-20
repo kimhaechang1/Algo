@@ -49,12 +49,9 @@ public class Main{
 		cost[1][1] = 0;
 		cost[1][0] = 0;
 		pq.add(new long[] {1, cost[1][0], 0});
-		int cnt = 0;
 		while(!pq.isEmpty()) {
 			long [] now = pq.poll();
-			//System.out.println(Arrays.toString(now));
-			//if(now[0] == n) break;
-			if(cost[(int)now[0]][(int)now[2]] != now[1]) continue;
+			if(cost[(int)now[0]][(int)now[2]] < now[1]) continue;
 			for(Node node : g[(int)now[0]]) {
 				if(now[2]+1 <= k && cost[node.e][(int)now[2]+1] > now[1]) {
 					cost[node.e][(int)now[2]+1] = now[1];
@@ -66,9 +63,6 @@ public class Main{
 				}
 			}
 		}
-		/*for(int i = 1;i<n+1;i++) {
-			System.out.println(Arrays.toString(cost[i]));
-		}*/
 		Arrays.sort(cost[n]);
 		return cost[n][0];
 	}

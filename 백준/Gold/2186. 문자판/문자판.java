@@ -36,19 +36,14 @@ public class Main{
         for(int i= 0;i<n;i++){
             for(int j = 0;j<m;j++){
                 if(find[0] == map[i][j]){
-                    char [] make = new char[find.length];
-                    int d = 0;
-                    make[d] = map[i][j];
-                    cnt += dfs(i, j, ++d, make);
+                    cnt += dfs(i, j,1);
                 }
             }
         }
         System.out.println(cnt);
     }
-    static int dfs(int y, int x, int depth, char [] present){
-        //System.out.println("y : "+ y + " x : "+x);
+    static int dfs(int y, int x, int depth){
         if(depth == find.length){
-            //System.out.println("찍고");
             return 1;
         }
         if(dp[y][x][depth] != -1){
@@ -60,8 +55,7 @@ public class Main{
                 int ny = y + dy[dir] * off;
                 int nx = x + dx[dir] * off;
                 if(OOB(ny, nx) || find[depth] != map[ny][nx]) continue;
-                dp[y][x][depth] += dfs(ny, nx, depth+1, present);
-                
+                dp[y][x][depth] += dfs(ny, nx, depth+1);
             }
         }
         return dp[y][x][depth];

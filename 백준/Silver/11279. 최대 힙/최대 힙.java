@@ -26,10 +26,7 @@ public class Main{
             sizeUp();
             int s = size();
             arr[s] = x;
-
             shiftUp();
-            //printHeap();
-
         }
         public int pop(){
             int poped = 0;
@@ -42,19 +39,13 @@ public class Main{
             }
             sizeDown();
             shiftDown();
-            //printHeap();
-
             return poped;
         }
         public void shiftUp(){
             int pointer = size();
 
             while(pointer > 1 && arr[pointer/2] < arr[pointer]){
-                //System.out.println("함수타니?");
-                //System.out.println("swap전 : ");printHeap();
-                //System.out.println("swap 대상 "+arr[pointer/2]+" <=> "+arr[pointer]);
                 swap(pointer/2, pointer);
-                //System.out.println("swap후 : ");printHeap();
                 pointer /=2;
             }
         }
@@ -69,9 +60,7 @@ public class Main{
         public void shiftDown(){
             int start = INIT_SIZE;
             int s = size();
-            //System.out.println("shiftDown 전 : ");printHeap();
             while(start*2 <= s && arr[start*2] > 0){
-                //System.out.println("fdafaasfasfaw 돌기");
                 int swapedIdx = -1;
                 int swaped = -1;
                 if(arr[start * 2] > arr[start]){
@@ -96,7 +85,6 @@ public class Main{
                 }
                 swap(start, swapedIdx);
                 start = swapedIdx;
-                //System.out.println("swap 후 start : "+start);
             }
         }
         private void swap(int a, int b){

@@ -18,6 +18,8 @@ public class Main{
         // 최장 증가부분 수열 문제
         // 수열을 먼저 정리해야 한다.
         // brr에 대하여 역 인덱싱을 해야한다.
+        // LIS를 돌리고 역추적을 위해 후보 배열이 필요하다
+        // 또한 LIS돌릴때, 최소 하나의 원소를 넣고 시작하기 때문에 해당 원소의 후보값을 안넣어두면 에러가 발생할 수 있다.
         int [] seq = new int[n];
         int [] rev = new int[n];
         for(int i = 0;i<n;i++){
@@ -26,10 +28,7 @@ public class Main{
         for(int i = 0;i<n;i++){
             seq[i] = rev[arr[i]-1];
         }
-        //System.out.println("arr : "+Arrays.toString(arr));
-        //System.out.println("brr : "+Arrays.toString(brr));
         int [] candi = new int[n];
-        //System.out.println("seq : "+Arrays.toString(seq));
         Arrays.fill(candi, -1);
         int [] dp = new int[n];
         dp[0] = seq[0];
@@ -45,14 +44,11 @@ public class Main{
                 dp[idx] = seq[i];
             }
         }
-        //System.out.println("dp : "+Arrays.toString(dp));
-        //System.out.println("candi : "+Arrays.toString(candi));
         Stack<Integer> stack = new Stack<>();
         int t = LIS;
         while(t > -1){
             for(int i = arr.length-1;i>-1;i--){
                 if(candi[i] != -1 && t == candi[i]){
-                    //System.out.println("idx : "+i);
                     stack.add(i);
                     --t;
                 }
@@ -64,16 +60,13 @@ public class Main{
             res[id] = arr[stack.pop()];
             id++;
         }
-        //System.out.println("res : "+Arrays.toString(res));
         Arrays.sort(res);
-        //System.out.println("sorted res : "+Arrays.toString(res));
         StringBuilder sb = new StringBuilder();
         sb.append(LIS+1).append("\n");
         for(int i= 0;i<=LIS;i++){
             sb.append(res[i]).append(" ");
         }
         System.out.print(sb);
-
     }
     static int lower(int [] arr, int start, int end, int find){
         int min = end;

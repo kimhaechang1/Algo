@@ -72,7 +72,7 @@ public class Main{
                     val = Integer.parseInt(stk.nextToken());
                     res = -1;
                     if(opt == 1){
-                        data = rec23.floor(new Data(0, val));
+                        data = rec23.lower(new Data(0, val));
                         if(data != null){
                             res = data.idx;
                         }

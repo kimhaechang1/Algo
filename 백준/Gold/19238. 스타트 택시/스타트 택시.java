@@ -136,6 +136,7 @@ public class Main{
     }
     static int [] goTarget(int ty, int tx){
         // todo : end맵을 sy, sx 좌표에서 부터 bfs를 돌면서 목적지까지의 사용한 연료양을 찾는다.
+        // 문제점 : 출발지점은 서로 무조건 다르지만, 도착지점은 서로다른 승객이 같을 수가 있엇다!
         // return [0] : 벽같은거에 막히지 않고 갈 수는 있음 = 0이면 갈 수 있음, 1이면 막힘, [1] : 그기까지 가는데 필요한 연료양
         Queue<int []> queue = new ArrayDeque<>();
         queue.add(new int[]{sy, sx, 0});

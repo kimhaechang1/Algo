@@ -15,14 +15,11 @@ public class Main{
         }
         int [] dp = new int[n+1];
         dp[0] = -999999999;
+        int max = Integer.MIN_VALUE;
         for(int i= 1;i<n+1;i++){
-            if(dp[i-1] + arr[i] <= arr[i]){
-                dp[i] = arr[i];
-            }else{
-                dp[i] = dp[i-1] + arr[i];
-            }
+            dp[i] = Math.max(dp[i-1]+arr[i], arr[i]);
+            max = Math.max(max, dp[i]);
         }
-        Arrays.sort(dp);
-        System.out.println(dp[n]);
+        System.out.println(max);
     }
 }

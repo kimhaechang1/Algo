@@ -47,6 +47,7 @@ public class Main{
         while(!pq.isEmpty()){
             long [] now = pq.poll();
             if(cost[(int)now[0]] > now[1]) continue;
+            if(now[0] == end) break;
             if(++cnt == n+1) break;
             for(Node node : g[(int)now[0]]){
                 if(cost[node.edge] < Math.min(node.weight, now[1])){
@@ -55,7 +56,6 @@ public class Main{
                 }
             }
         }
-        //System.out.println(Arrays.toString(cost));
         System.out.print(cost[end]);
     }
 }

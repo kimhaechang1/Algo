@@ -1,5 +1,5 @@
 // start 12:41
-// end
+// end 13:14
 import java.util.*;
 
 class Solution {
@@ -30,6 +30,7 @@ class Solution {
         // B 따로 가는경우
         // A-B가 함께 가는경우
         // 모든 경우를 다 봐보면 되지않을까
+        // 특이 케이스 -> 한 지점을 정했을 때 그 지점이 a 혹은 b의 도착지점 일수도 있음
         long depart = dp[s][a] + dp[s][b];
         long min = 987654321;
         for(int i = 1;i<=n;i++){
@@ -45,16 +46,6 @@ class Solution {
             }
             min = Math.min(commonSum + aSum + bSum, min);
         }
-        System.out.println("min : "+min);
-        // System.out.println("s -> a = "+dp[s][a]);
-        // System.out.println("s -> b = "+dp[s][b]);
-        // for(int i= 1;i<n+1;i++){
-        //     for(int j= 1;j<n+1;j++){
-        //         if(dp[i][j] == 987654321) System.out.print("0 ");
-        //         else System.out.print(dp[i][j]+" ");
-        //     }
-        //     System.out.println();
-        // }
         
         int answer = (int)Math.min(min, depart);
         return answer;

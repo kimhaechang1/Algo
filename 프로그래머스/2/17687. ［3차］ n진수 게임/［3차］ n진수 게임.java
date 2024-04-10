@@ -1,5 +1,5 @@
 // start 16:15
-// end 
+// end 17:35
 import java.util.*;
 
 class Solution {
@@ -12,7 +12,6 @@ class Solution {
         for(int i = 0;i<7;i++){
             tenToHex[i+10] = String.valueOf((char)('A'+i));
         }
-        //System.out.println(Arrays.toString(tenToHex));
         String answer = "";
         int cnt = 0;
         int current = 0;
@@ -20,7 +19,6 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         while(cnt < t){
             String result = converter(current, n);
-            //System.out.println("current : "+current+" n : "+n+" = "+result);
             int totalLen = lenStart + result.length();
             for(int s = lenStart;s < totalLen;s++){
                 if((s % m) == (p % m)){
@@ -55,8 +53,6 @@ class Solution {
             }else {
             	stack.push(String.valueOf(number));
             }
-            
-            //result.append(number);
             while(!stack.isEmpty()){
                 result.append(stack.pop());
             }

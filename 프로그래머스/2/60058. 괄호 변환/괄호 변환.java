@@ -1,5 +1,5 @@
 // start 19:22
-// end
+// end 21:07
 import java.util.*;
 
 class Solution {
@@ -11,6 +11,7 @@ class Solution {
         // 균형잡힌 문자열의 경우는 배제하여 균형잡히지 않은 문자열을 균형잡아서 균형잡혀있는 문자열에 붙임
         // 앞 뒤 문자를 제거하고 나머지 문자의 괄호방향을 뒤집음
         // 그리고 앞 뒤에 () 를 감싸서 리턴함
+        // 그냥 진짜 시키는데로 했으면 풀리는 문제....
         if(check(p)){
             answer = p;
         }else{
@@ -19,7 +20,7 @@ class Solution {
         return answer;
     }
     String dfs(String brackets){
-        if(brackets.length() == 0) return brackets;
+        if(brackets.length() == 0) return brackets; // 빈 문자열의 경우 빈 문자열 반환
         int open = 0;
         int close = 0;
         int stopIdx = -1;
@@ -30,16 +31,17 @@ class Solution {
                 close++;
             }
             if(open == close){
-                stopIdx = open+close;
+                stopIdx = open+close; // -> 만났던 괄호 총 개수 = 멈추는 순간임
                 break;
             }
         }
         String u = brackets.substring(0, stopIdx);
         String v = brackets.substring(stopIdx, brackets.length());
         if(check(u)){
-            return u + dfs(v);
+            return u + dfs(v); // u가 올바른 문자열이면 v에 대해서 재귀
         }else{
-            return "(" + dfs(v) + ")"+converter(u);
+            return "(" + dfs(v) + ")"+converter(u); // u가 올바른 문자열이 아니면 
+            // u는 앞뒤 짜르고 v에 대해서 수행한거 앞 뒤에 괄호를 붙여서 뒤에 u를 붙임
         }        
 
     }

@@ -1,5 +1,5 @@
 // start 21:01
-// end
+// end 21:19
 import java.util.*;
 
 class Solution {
@@ -21,7 +21,6 @@ class Solution {
                     }
                 }
             }
-            System.out.println(Arrays.toString(board));
             for(int j = 0;j<skill.length()-1;j++){
                 if(board[j] > board[j+1]){
                     isError = true;

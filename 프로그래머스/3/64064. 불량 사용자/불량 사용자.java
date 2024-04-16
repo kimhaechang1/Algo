@@ -17,10 +17,6 @@ class Solution {
         n = users.length;
         cnt = 0;
         set = new HashSet<>();
-        boolean [] v = new boolean[n];
-        boolean [] useBan = new boolean[bans.length];
-        // 순열로 재시도
-        // 만들어진 문자열 셋의 개수가 곧 정답이다.
         dfs(0, new HashSet<>());
         return set.size();
     }
@@ -33,6 +29,7 @@ class Solution {
             if(tempSet.contains(users[i])) continue;
             if(!isCheck(users[i], bans[depth]))continue;
             tempSet.add(users[i]);
+            // 깊은 복사를 하지 않으면 참조값만 옮겨가기 때문에 문제가 발생함
             dfs(depth+1, new HashSet<>(tempSet));
             tempSet.remove(users[i]);
         }

@@ -1,5 +1,5 @@
 // start 09:00
-// end
+// end 10:40
 import java.util.*;
 class Solution {
     class Data{
@@ -62,7 +62,6 @@ class Solution {
             }
            return b.y - a.y;
         });
-        //System.out.println(Arrays.toString(datas));
         Node root = new Node(datas[0].idx, datas[0].x);
         int idx = 1;
         while(idx < n){

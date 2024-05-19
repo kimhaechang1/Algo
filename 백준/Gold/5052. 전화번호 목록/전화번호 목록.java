@@ -1,39 +1,76 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Main{
-    static int T;
+    static String [] strings;
+
+    static class Node{
+        HashMap<Character, Node> child = new HashMap<>();
+        boolean isEnd;
+        int count;
+    }
+    static class Trie{
+
+        Node root;
+        public Trie(){
+            this.root = new Node();
+        }
+
+        public void insert(String str){
+            Node p = this.root;
+            for(int i = 0;i<str.length();i++){
+                if(p.child.containsKey(str.charAt(i))){
+//                    System.out.println("존재함: "+str.charAt(i));
+                    p = p.child.get(str.charAt(i));
+                    p.count++;
+                }else{
+//                    System.out.println("존재안함: "+str.charAt(i));
+                    p.child.put(str.charAt(i), new Node());
+                    p = p.child.get(str.charAt(i));
+                    p.count++;
+                }
+            }
+            p.isEnd = true;
+        }
+
+        public boolean search(String str){
+            Node p = this.root;
+            for(int i = 0;i<str.length();i++){
+                Node element = p.child.get(str.charAt(i));
+                if(str.length() != i+1 && element.isEnd){
+                    return false;
+                }
+                p = element;
+            }
+            return true;
+        }
+    }
+
     public static void main(String [] args) throws Exception{
-        BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
-        T = Integer.parseInt(bf.readLine());
-        StringBuilder sb = new StringBuilder();
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(bf.readLine());
+        StringBuilder sb= new StringBuilder();
         while(T-- > 0){
             int n = Integer.parseInt(bf.readLine());
-            String [] strs = new String[n];
-            for(int i = 0;i<strs.length;i++){
-                strs[i] = bf.readLine();
+            strings = new String[n];
+            Trie trie = new Trie();
+            for(int i = 0;i<n;i++){
+                strings[i] = bf.readLine();
+                trie.insert(strings[i]);
             }
-            Arrays.sort(strs);
             String ans = "YES";
-            for(int i = 0;i<n-1;i++){
-                int target;
-                String sub;
-                if(strs[i].length() < strs[i+1].length()){
-                    target = strs[i].length();
-                    sub = strs[i+1].substring(0, target);
-                }else if(strs[i].length() > strs[i+1].length()){
-                    target = strs[i+1].length();
-                    sub = strs[i].substring(0, target);
-                }else{
-                    continue;
-                }
-                if(strs[i].equals(sub)){
+            for(String str: strings){
+                if(!trie.search(str)){
                     ans = "NO";
                     break;
                 }
             }
+
             sb.append(ans).append("\n");
+
         }
         System.out.print(sb);
+
     }
 }

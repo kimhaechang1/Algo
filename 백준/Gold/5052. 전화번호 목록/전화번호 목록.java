@@ -21,11 +21,9 @@ public class Main{
             Node p = this.root;
             for(int i = 0;i<str.length();i++){
                 if(p.child.containsKey(str.charAt(i))){
-//                    System.out.println("존재함: "+str.charAt(i));
                     p = p.child.get(str.charAt(i));
                     p.count++;
                 }else{
-//                    System.out.println("존재안함: "+str.charAt(i));
                     p.child.put(str.charAt(i), new Node());
                     p = p.child.get(str.charAt(i));
                     p.count++;

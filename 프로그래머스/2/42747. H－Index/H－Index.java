@@ -6,7 +6,6 @@ class Solution {
         // h의 최대값이 H-Index
         // 이분탐색
         Arrays.sort(citations);
-        System.out.println(Arrays.toString(citations));
         int s = 0;
         int e = 1000;
         int answer = 1000;

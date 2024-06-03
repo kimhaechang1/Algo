@@ -8,9 +8,6 @@ class Solution {
         for(int i = 0;i<26;i++){
             map.put(String.valueOf((char)('A'+i)), i+1);
         }
-        /*for(Map.Entry<String, Integer> entry: map.entrySet()){
-            System.out.println(entry.getKey()+" "+entry.getValue());
-        }*/
         ArrayList<Integer> ansList = new ArrayList<>();
         // 해당 문자열이 등록되어있지 않을때 까지 뽑고
         // 않는 순간 그전까지 합쳐진 문자열의 index를 출력하고 새로운 문자열을 붙여서 insert

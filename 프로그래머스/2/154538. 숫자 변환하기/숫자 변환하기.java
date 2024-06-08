@@ -4,7 +4,7 @@ class Solution {
     static int [] v;
     public int solution(int x, int y, int n) {
         int answer = 0;
-        return bfs(x, y, n);
+        return get(x, y, n);
     }
     static int bfs(int x, int y, int n){
         PriorityQueue<int []> pq =new PriorityQueue<>((a, b)->{
@@ -31,5 +31,22 @@ class Solution {
             }
         }
         return -1;
+    }
+    static int get(int x, int y, int n){
+        int [] dp = new int[1_000_001];
+        Arrays.fill(dp, 987654321);
+        dp[x] = 0;
+        for(int i = x;i<=y;i++){
+            if(i % 2 == 0){
+                dp[i] = Math.min(dp[i], dp[i/2]+1);
+            }
+            if(i % 3 == 0){
+                dp[i] = Math.min(dp[i], dp[i/3]+1);
+            }
+            if(i-n > -1 && dp[i-n]+1 < dp[i]){
+                dp[i] = dp[i-n]+1;
+            }
+        }
+        return dp[y] == 987654321 ? -1 : dp[y];
     }
 }

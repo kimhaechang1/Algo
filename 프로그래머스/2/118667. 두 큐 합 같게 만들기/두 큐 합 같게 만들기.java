@@ -26,7 +26,9 @@ class Solution {
         boolean flag = false;
         // 최대 반복가능한 횟수를 지정해야 한다.
         // 왜냐하면 적절치 못한 차이 때문에 좌우 왔다갔다하는 수가 존재할 수 있기 때문
-        while(answer <= 2*n){
+        // 최대 반복가능한 횟수는 한쪽의 원소가 반대쪽에 가고 반대쪽이 한쪽으로 가는 경우가 2n이므로
+        // 다시 되돌아 오는것 까지 포함해서 4n이다. (카카오 해설에 적혀있음)
+        while(answer <= 4*n){
             if(left == target && right == target){
                 flag = true;
                 break;

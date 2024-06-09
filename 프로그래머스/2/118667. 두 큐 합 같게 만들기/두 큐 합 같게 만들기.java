@@ -21,11 +21,12 @@ class Solution {
             rq.add(queue2[i]);
         }
         int n = lq.size() + rq.size();
+        if(sum % 2 != 0) return -1; // 총 합이 홀수면 두개로 못나눔
         long target = sum/2;
         boolean flag = false;
         // 최대 반복가능한 횟수를 지정해야 한다.
         // 왜냐하면 적절치 못한 차이 때문에 좌우 왔다갔다하는 수가 존재할 수 있기 때문
-        while(answer <= 3*n){
+        while(answer <= 2*n){
             if(left == target && right == target){
                 flag = true;
                 break;

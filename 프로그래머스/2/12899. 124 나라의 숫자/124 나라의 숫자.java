@@ -5,7 +5,7 @@ class Solution {
         // 자연수만 존재 1~ n
         // 모든 수를 표현할 때 1, 2, 4 만 사용
         String answer = "";
-        ArrayDeque<String> stack = new ArrayDeque<>();
+        Stack<String> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
         while(n > 0){
             int result = n % 3;

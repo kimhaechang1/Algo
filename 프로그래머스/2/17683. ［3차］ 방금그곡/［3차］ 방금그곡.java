@@ -28,8 +28,7 @@ class Solution {
         map.put("F#", "3");
         map.put("G#", "4");
         map.put("A#", "5");
-        map.put("B#", "6");
-        map.put("E#", "7");
+        map.put("B#", "6"); // tlqkf 이거 조건에 없었음!
         // 파싱이후 문자열을 재생시간만큼 이어붙여 완성시키고
         // 문자열이 포함되어잇는지 검사
         PriorityQueue<Data> pq = new PriorityQueue<>();

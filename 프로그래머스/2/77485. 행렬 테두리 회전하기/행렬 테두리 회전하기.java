@@ -21,8 +21,6 @@ class Solution {
     }
     static int rotate(int [] info){
         int r1 = --info[0], c1 = --info[1], r2 = --info[2], c2 = --info[3];
-        int width = c2 - c1;
-        int height = r2 - r1;
         int temp = map[r1][c1]; //-> map[r1][c1+1]에 꽂아야함
         int min = temp;
         for(int i = r1;i<r2;i++){

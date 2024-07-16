@@ -26,16 +26,16 @@ public class Main {
                         res = val;
                     }
                 }
-                if(now[3] != 0 && map[ny][nx] == 0 && !v[ny][nx][1]){
-                    v[ny][nx][1] = true;
+                if(now[3] != 0 && map[ny][nx] == 0 && !v[1][ny][nx]){
+                    v[1][ny][nx] = true;
                     queue.add(new int[]{ny,nx,now[2]+1, now[3]});
                 }
-                if(now[3] == 0 && map[ny][nx] == 0 && !v[ny][nx][0]){
-                    v[ny][nx][0] = true;
+                if(now[3] == 0 && map[ny][nx] == 0 && !v[0][ny][nx]){
+                    v[0][ny][nx] = true;
                     queue.add(new int[]{ny,nx,now[2]+1, now[3]});
                 }
-                if(now[3]==0  &&map[ny][nx] == 1 && !v[ny][nx][0]){
-                    v[ny][nx][0] = true;
+                if(now[3]==0  &&map[ny][nx] == 1 && !v[0][ny][nx]){
+                    v[0][ny][nx] = true;
                     queue.add(new int[]{ny,nx,now[2]+1, now[3]+1});
                 }
             }
@@ -55,7 +55,7 @@ public class Main {
         N = Integer.parseInt(stk.nextToken());
         M = Integer.parseInt(stk.nextToken());
         map = new int[N][M];
-        v = new boolean[N][M][2]; // 벽을 부수고 도착한건지 그냥 도착한건지 구분해야 한다.
+        v = new boolean[2][N][M]; // 벽을 부수고 도착한건지 그냥 도착한건지 구분해야 한다.
         res = Integer.MAX_VALUE;
         for(int i = 0;i<N;i++){
             String t = bf.readLine();

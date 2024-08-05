@@ -17,7 +17,6 @@ public class Main{
         // 전체 길이가 홀수라면, 홀수개가 단 하나만 등장해야함 그래야 1개 가운데용 으로 빼고 나머지 모두 짝수개여야 함.
         int len = before.length();
         boolean flag = true;
-        String result = new String(before);
         if (len % 2 == 0){
             for(int i= 0;i<26;i++){
                 if(cnt[i] == 0) continue;

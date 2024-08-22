@@ -13,11 +13,6 @@
 - 우선순위를 헷갈림 ( 우선순위값이 먼저 고려해야 하냐랑 도착시간을 먼저 고려해야하냐 )
 - 실행 대기큐를 처리하는 방법을 잘못생각함 ( 한번에 하나만 처리가능함을 인지하지 못함 )
 
-피드백
-
-- 문제에서 보면 특정 시점에 콜된 프로그램들 중 우선순위가 높은 프로그램을 먼저 시작한다고 되어있다.
-  - 여기서 알수 있듯, 콜된 시각이 중요하고 그 시각에 같이 콜된 프로그램들을 대기큐에 넣는것이 핵심이다.
-
 CODE
 ```java
 import java.util.*;
@@ -34,51 +29,44 @@ class Solution {
                 return Integer.compare(a[1], b[1]);
             }
             return Integer.compare(a[0], b[0]);
-        }); // 실행대기 큐
-            
-        PriorityQueue<int[]> pq2 = new PriorityQueue<>((a, b)-> {
-            
-            return Integer.compare(a[1], b[1]);
-        }); // 타임라인 큐
-        
-      
+        });
+
+
+        Arrays.sort(programs, (a, b) -> {
+            if(a[1] == b[1]) {
+                return a[0] - b[0];
+            }
+            return a[1] - b[1];
+        });
+
         int len = programs.length;
-        
-        for(int i = 0;i<len;i++) {
-            pq2.add(programs[i]);
-        }
-        
+
+
         // answer[0]: 모든 프로그램이 종료되는 시각
         // answer[n]: 프로그램점수가 n인 프로그램들의 대기시간의 합
-        int time = 0;
-        
-        while(!pq2.isEmpty() || !pq.isEmpty()) {
-            // 모든 프로그램을 처리해야 한다는 조건
-            while(!pq2.isEmpty() && pq2.peek()[1] <= time) {
-                // 현재 프로그램의 종료시각보다 더 빨리 콜된 프로그램들을 실행대기큐로 옮김
-                pq.add(pq2.poll());
+
+        int ptr = 0;
+        long time = programs[ptr][1] + programs[ptr][2];
+        ptr++;
+        while(true) {
+            while(ptr < len && programs[ptr][1] <= time) {
+                // 다른 프로그램 실행중일때 콜이 발동된 프로그램들은 대기큐로
+                pq.add(programs[ptr++]);
             }
-            
-            if(!pq.isEmpty()) {
-                // 실행대기큐가 쌓여있다면 하나씩 실행대기큐에서 꺼내서 실행함
-                int[] now = pq.poll();
-                int idx = now[0];
-                int call =now[1];
-                int dura = now[2];
-                
-                answer[idx] += time - call;
-                time += dura;
-                // 이때 아래의 continue가 없으면, 시간이 잘못더해지는걸 방지할 수 있음
+            if(ptr < len && pq.isEmpty()) {
+                // 위에서 못채웠단 의미는 동떨어진 프로그램이 있는 경우다.
+                time = programs[ptr][1] + programs[ptr][2];
+                ptr++;
+            } else if (!pq.isEmpty()){
+                // 대기큐에 남아있으면 처리해야 한다.
+                int[] p = pq.poll();
+                answer[p[0]] += time - p[1];
+                time += p[2];
             } else {
-                int[] peek = pq2.peek();
-                // 간격이 동떨어진 프로그램의 경우, 실행큐로 들어가기 위한 처리를 한다.
-                time = peek[1];
-                pq.add(peek);
-                pq2.poll();
+                // 더이상 고려할 프로그램도 없고 대기큐도 비었다는것은 종료각
+                break;
             }
-            // 실행대기큐가 쌓여있지 않다면 시간을 하나씩 더하면서 처리함
         }
-    
         answer[0] = time;
         
         return answer;

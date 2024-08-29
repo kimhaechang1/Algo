@@ -27,6 +27,11 @@ class Solution {
         // 끝나자 마자 새롭게 시작하는 과제가 있는경우는, 보관소로 이동하지 않음
         // 끝나자 마자 보관소의 원소와 new가 둘다 있는경우에는, new를 우선시함
         // 보관소도 가장 최근에 멈춘 과제부터 시작함
+        
+        // 진행중이었던 과제를 도중에 멈출경우 wait으로 들어가는데, 이때 현재시각 업데이트를 진행한만큼만 업데이트해야하는데, 
+        // 새로 시작하는 과제의 시작시각으로 업데이트함
+        // 그럴경우 나중에 해당 과제의 남은시각 관리하기가 힘들어짐
+        
         n = plans.length;
         Data[] drr = new Data[n];
         for(int i =0;i<n;i++){
@@ -49,8 +54,6 @@ class Solution {
         while(!pq.isEmpty() || !wait.isEmpty()) {
             if(!pq.isEmpty()) {
                 Data newData = pq.peek();
-                //System.out.println("진행중이던: "+go+"현재 시각: "+presentTime);
-                //System.out.println("새로 시작하려는: "+newData);
                 if(newData.s <= presentTime + go.d) {
                     boolean isSame = false;
                     if(newData.s == presentTime + go.d) {
@@ -59,11 +62,9 @@ class Solution {
                     if(!isSame) {
                         go.setStop(newData.s);
                         go.d -= (newData.s - presentTime);
-                        //System.out.println("중단과제 큐에 넣음: "+go);
                         presentTime += (newData.s - presentTime);
                         wait.add(go);
                     } else {
-                        //System.out.println("곧바로 시작하면 되서 기존에 껄 종료: "+go);
                         result.add(go.n);
                         presentTime += go.d;
                     }
@@ -71,12 +72,9 @@ class Solution {
                     pq.poll();
                 } else if(newData.s > presentTime + go.d) {
                     boolean useWait = false;
-                    //System.out.println("걍 시작하면됨: "+newData);
-                    //System.out.println("기존의 진행중이던거 끝냄: "+go);
                     result.add(go.n);
                     if(!wait.isEmpty()) {
                         Data w = wait.poll();
-                        //System.out.println("wait에서 꺼냄: "+newData);
                         presentTime += go.d;
                         go = w;
                         useWait = true;

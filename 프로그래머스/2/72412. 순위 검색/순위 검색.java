@@ -5,6 +5,11 @@ class Solution {
     public int[] solution(String[] info, String[] query) {
         map = new HashMap<>();
         for(int i =0;i<info.length;i++) {
+            // 여기서 미리 모든 키를 만들 수 없는데는 이유가 있다.
+            // 왜냐하면 모든키를 미리 만들어놓고서 현재 알고있는 정보를 기입하려 하면 어떤 경우까지 가능한지 
+            // key에 대한 완전탐색을 해야하기 때문이다.
+            // 대신 여기와 같이 알고있는 키 조합에 대해서 -의 경우를 섞어서 모든키로 조합을 만드는건 쉽다
+            // 그게 무슨말이냐? 현재 해당하는 score를 가져갈 수 있는 모든 key 조합을 만든다는 의미이다.
             dfs(0, "",info[i].split(" "));
         }
         

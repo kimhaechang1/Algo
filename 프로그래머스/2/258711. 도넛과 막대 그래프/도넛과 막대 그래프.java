@@ -2,8 +2,8 @@ import java.util.*;
 
 class Solution {
     static HashSet<Integer> all;
-    static HashMap<Integer, Integer> out; // key 노드에서 나가는 정점
-    static HashMap<Integer, Integer> in;  // key 노드로 들어오는 정점
+    static HashMap<Integer, Integer> out; // key 노드에서 나가는 간선의 개수
+    static HashMap<Integer, Integer> in;  // key 노드로 들어오는 간선의 개수
     public int[] solution(int[][] edges) {
         int[] answer = {};
         // 도넛모양은 출발정점으로 돌아오는데 간선의 개수와 정점의 개수가 모두 n개

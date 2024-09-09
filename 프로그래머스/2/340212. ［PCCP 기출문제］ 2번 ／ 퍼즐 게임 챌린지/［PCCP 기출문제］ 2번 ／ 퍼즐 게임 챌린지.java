@@ -6,12 +6,13 @@ class Solution {
         int answer = 0;
         n = diffs.length;
         // 숙련도의 최솟값을 정수로 return
-        long s = Integer.MAX_VALUE;
-        for(int i = 0;i<diffs.length;i++) {
-            s = Math.min(s, diffs[i]);
+        long s = diffs[0];
+        long e = 0;
+        for(int i =0;i<diffs.length;i++) {
+            e = (int)Math.max(e, diffs[i]);
         }
         
-        long e = Integer.MAX_VALUE;
+        
         answer = Integer.MAX_VALUE;
         while(s <= e) {
             long mid = (s + e) / 2;

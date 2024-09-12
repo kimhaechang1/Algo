@@ -65,15 +65,18 @@ class Solution {
                     }
                     rts.add(new int[]{sy, sx});
                 }
-                //;
                 list[i].addAll(rts);
             }
         }
 
-
+        // 로봇 종류별 최단거리 이동좌표 리스트 로 구성된 자료구조를 시간대별 로봇들의 이동좌표 리스트로 변환한다.
+        // 그 이유는 무슨 로봇끼리 충돌했는지는 관심없기 때문이다.
+        // 해시맵으로 한 이유는 시간이 무조건 선형적이지 않을수도 있다고 생각했다.
+        // 그렇게 시간 초 별로 좌표를 담은 곳에 대하여 HashMap<Point, Integer>로 된 counting Map을 사용한다.
+        // 여기서 value값이 1보다 크다면 충돌이 발생한것으로 간주하고 정답 카운팅
+        
         HashMap<Integer, ArrayList<Point>> timeTable = new HashMap<>();
         for(int i = 0;i<rn;i++) {
-            // System.out.println("# i: "+i);
             for(int j = 0;j<list[i].size();j++) {
                 ArrayList<Point> llist = timeTable.get(j);
                 if(llist == null) llist = new ArrayList<>();

@@ -9,6 +9,7 @@ class Solution {
                 answer[i] = s / n;
             }
         } else {
+            // 반례
             // 33 33 33 35
             // 1,257,795
             // 33 33 34 34

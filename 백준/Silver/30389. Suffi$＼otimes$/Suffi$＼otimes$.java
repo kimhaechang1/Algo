@@ -25,7 +25,7 @@ public class Main{
         }
         int ans = 0;
         for(String suffix: suffixCnt.keySet()) {
-            if (suffixCnt.get(suffix) % 2 == 1) ans++;
+            if ((suffixCnt.get(suffix) & 1) == 1) ans++;
         }
         System.out.println(ans);
 

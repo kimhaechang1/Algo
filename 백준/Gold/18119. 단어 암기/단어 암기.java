@@ -28,7 +28,6 @@ public class Main{
             }
             origin[i] = bitSet;
         }
-
         while(q-- > 0) {
             stk = new StringTokenizer(bf.readLine());
             int flag = Integer.parseInt(stk.nextToken());
@@ -50,10 +49,8 @@ public class Main{
     }
     static int getShiftBit(char target) {
         int targetIdx = (int)target - 'a';
-        int targetBit = 1;
-        for(int j = 0;j<targetIdx;j++) {
-            targetBit <<= 1;
-        }
+        int targetBit = 0;
+        targetBit |= (1 << (targetIdx));
         return targetBit;
     }
     static void bitPrint(int bitSet) {
@@ -67,6 +64,6 @@ public class Main{
             }
             bit <<= 1;
         }
-        System.out.print(sb);
+        System.out.println(sb);
     }
 }

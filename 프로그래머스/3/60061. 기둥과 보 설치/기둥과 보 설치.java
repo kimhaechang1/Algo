@@ -57,15 +57,6 @@ class Solution {
         }
         return answer;
     }
-    static void printMap(int[][] map) {
-        for(int i = 0;i<map.length;i++) {
-            for(int j =0;j<map[i].length;j++) {
-                System.out.print((map[i][j] == -1 ? 0 : map[i][j]) +" ");
-            }
-            System.out.println();
-        }
-        System.out.println("################");
-    }
     static boolean installChecker(int x, int y, int type) {
         if (type == 0) {
             if (y == 0) return true;

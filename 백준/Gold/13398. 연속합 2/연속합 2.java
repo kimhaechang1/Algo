@@ -1,48 +1,58 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
 
-public class Main{
+public class Main {
 
-    static StringTokenizer stk;
-    static int n;
-    static int[] arr;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st;
 
-    public static void solve() {
-        int ans = 0;
-        int[][] dp = new int[n][2];
-        // 0 건너뜀을 안썻음, 1 건너뜀을 썻음
-        // idx = 1번을 기준으로 -4를 10을 선택한 결과에서 더하냐, 아니면 10을 포기한 상태에서 더하냐를 갈라야함
-        dp[0][0] = arr[0];
-        int max1 = dp[0][0];
-        int max2 = dp[0][0];
-        for(int i = 1;i<n;i++) {
-            // 원래 연속 최대구간 찾는 dp
-            dp[i][0] = Math.max(dp[i - 1][0] + arr[i], arr[i]);
-            max1 = Math.max(max1, dp[i][0]);
-        }
-        for(int i = 1;i<n;i++) {
-            // 자기 앞의 원소를 무시하고 얻는 최적의 값에서 현재값을 더하는것과, 그냥 연속 최대구간 찾는 dp값과의 비교
-            dp[i][1] = Math.max(dp[i - 1][0], dp[i - 1][1] + arr[i]);
-            max2 = Math.max(max2, dp[i][1]);
-        }
+		int N = Integer.parseInt(br.readLine());
+		int[] arr = new int[N];
 
-        System.out.println(Math.max(max1, max2));
+		st = new StringTokenizer(br.readLine());
 
-    }
-    public static void input() throws Exception {
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
 
-        BufferedReader bf =new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(bf.readLine());
-        arr = new int[n];
-        stk = new StringTokenizer(bf.readLine());
-        for(int i = 0;i<n;i++) arr[i] = Integer.parseInt(stk.nextToken());
-    }
+		int[] dp1 = new int[N];
+		dp1[0] = arr[0];
 
-    public static void main(String[] args) throws Exception {
-        input();
-        solve();
-    }
+		int ans = dp1[0];
 
+		// 오른쪽 방향으로 최대 연속 합을 각각 저장함.
+		for (int i = 1; i < N; i++) {
+			dp1[i] = Math.max(dp1[i - 1] + arr[i], arr[i]);
+
+			ans = Math.max(ans, dp1[i]);
+		}
+
+		int[] dp2 = new int[N];
+		dp2[N - 1] = arr[N - 1];
+
+		// 왼쪽 방향으로 최대 연속 합을 각각 저장함.
+		for (int i = N - 2; i >= 0; i--) {
+			dp2[i] = Math.max(dp2[i + 1] + arr[i], arr[i]);
+		}
+
+		// 특정 값을 지웠다고 가정하고, 그 값의 오른쪽 방향과 왼쪽 방향의 최대 연속 합을 더함.
+		// 윗줄에서 구한 값과 ans를 비교하여 더 큰 값으로 갱신.
+		for (int i = 1; i < N - 1; i++) {
+			int temp = dp1[i - 1] + dp2[i + 1];
+
+			ans = Math.max(ans, temp);
+		}
+
+		bw.write(ans + "\n");
+		bw.flush();
+		bw.close();
+		br.close();
+	}
 
 }

@@ -7,26 +7,27 @@ public class Main{
     static StringTokenizer stk;
     static int n, d;
     static int[][] info;
-    static int min;
-    static boolean[] select;
     public static void solve() {
-        min = Integer.MAX_VALUE;
-        dfs(0, 0);
-        System.out.print(min);
-    }
-    static void dfs(int pd, int sum) {
-        if (pd == d) {
-            min = Math.min(min, sum);
-            return;
+        // 모든 거리별 기본 거리값은 그냥 걸어가는 경우가 있고
+        // 해당 거리에 도착하는 방법은 지름길을 타고 도착한 경우가 있다.
+        // 지름길을 타는 횟수제한이 없으므로 최솟값 비교를 통해 누적해 나간다.
+        int[] dp = new int[d+1];
+        for(int i = 0;i<d+1;i++) {
+            dp[i] = i;
         }
-        for(int i = 0;i<n;i++) {
-            if (pd > info[i][0]) continue;
-            if (info[i][1] > d) continue;
+        for(int i = 1;i<d+1;i++) {
+            // 이전의 값이 혹시나 지름길을 타고와서 짧을수도 있음
+            dp[i] = Math.min(dp[i-1] + 1, dp[i]);
 
-            dfs(info[i][1], sum + (info[i][0] - pd + info[i][2]));
+            for(int j = 0;j<n;j++) {
+                if (i == info[j][1]) {
+                    dp[info[j][1]] = Math.min(dp[info[j][1]], dp[info[j][0]] + info[j][2]);
+                }
+            }
         }
-        dfs(d, sum + (d - pd));
+        System.out.print(dp[d]);
     }
+
 
     public static void input() throws Exception {
 

@@ -23,20 +23,21 @@ class Solution {
             }
             if (sum >= n) {
                 time = Math.min(mid, time);
-                jobs = sum;
+                // jobs = sum; jobs를 여기서 처리했다면, n 이상의 job이므로 뒤에서부터 처리해야한다.
                 e = mid - 1;
             } else {
+                jobs = sum; // 최소시각 직전까지의 작업 처리량이므로 여기서부터 올라가도 된다.
                 s = mid + 1;
             }
         }
-
-        for(int i = cores.length - 1;i > -1; i--) {
+        long remain = n - jobs;
+        for(int i = 0;i < cores.length; i++) {
             if (time % cores[i] == 0) {
-                if (jobs == n) {
+                remain--;
+                if (remain == 0) {
                     answer = i + 1;
                     break;
                 }
-                jobs--;
             }
         }
 

@@ -1,41 +1,41 @@
+// 순서번호가 붙어있는 과자들 -> 정렬을 하면 순서 흐뜨러짐
+// 두 아들에게 줄 과자, i ~ m번까지와 m + 1 ~ r번까지의 바구니, -> 두 아들이 어떤 연속된 구간을 나눠가짐
+// 두 아들이 받을 과자수는 같아야함
+// 한명의 아들에게 줄 수 있는 가장 많은 과자수
+// 즉 두사람에게 나눠줄 연속된 구간의 합이 같고, 그러한 합들 중 최대값? 을 찾는 것 같음
+// 
+// [1, 1, 2, 3]
+// [0, 1, 2, 4, 7]
+//     l     m  r  
 import java.util.*;
 
 class Solution {
     static int n;
     public int solution(int[] cookie) {
-        // 두 사람한테 줄 과자를 산다.
-        // l~m, m+1 ~ r
-        // 연속적인 데이터들의 합이 기준점을 기준으로 좌우가 같아야한다.
         int answer = 0;
         n = cookie.length;
-        int [] S = new int[n+1];
-        for(int i=0;i<n;i++){
-            S[i+1] = S[i] + cookie[i]; // 누적합
+        int[] S = new int[n + 1];
+        for(int i = 1;i<n + 1;i++) {
+            S[i] = S[i - 1] + cookie[i - 1];
         }
-        // System.out.println(Arrays.toString(S));
-        for(int i = 1;i<S.length-1;i++){
-            // 기준점 잡고 투포인터
-            int gi = i;
-            int s = 0;
-            int e = S.length - 1;
-            // 	[0, 1, 2, 4, 7]
-            //      s  g  r 
-            while(s < gi && e > gi){
-                int left = S[gi] - S[s];
-                int right = S[e] - S[gi];
-                // System.out.println("g: "+gi+" s: "+s+" e: "+e);
-                // System.out.println(left+" : "+right);
-                if(left == right){
-                    answer = Math.max(answer, right);
-                    s++;
-                }else if(left > right){
-                    s++;
-                }else{
-                    e--;
+        
+        for(int r = 2;r < n + 1; r++) {
+            int l = 0;
+            int m = l + 1;
+            while(l < m) {
+                int c1 = S[m] - S[l];
+                int c2 = S[r] - S[m];
+                if(c1 == c2) {
+                    answer = Math.max(answer, c1);
+                }
+                if (c1 >= c2) {
+                    l++;
+                } else {
+                    m++;
                 }
             }
         }
-        
+    
         return answer;
     }
 }

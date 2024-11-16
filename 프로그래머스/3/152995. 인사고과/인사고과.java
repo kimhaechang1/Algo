@@ -1,59 +1,78 @@
 import java.util.*;
+// 어떤 사원이 다른 임의의 사원보다 두 점수가 모두 낮은 경우가 한번이라도 있다면 인센티브를 못받음
+// 두 점수의 합이 높은순으로 석차를 냄
+// 그러면 둘 중 하나만 높아도 상관없다는 것이니까
+// 하나를 기준으로 내림차순, 반대쪽을 오름차순으로 정렬하면
+
+// 인센티브를 못받는 직원을 제외시키기
 
 class Solution {
-    static class Data{
-        int left;
-        int right;
-        int hap;
+    static class Data {
         int idx;
-        public Data(int left, int right, int idx){
-            this.left = left;
-            this.right = right;
-            this.hap = this.left + this.right;
+        int s1;
+        int s2;
+        
+        public Data(int idx, int s1, int s2) {
             this.idx = idx;
+            this.s1 = s1;
+            this.s2 = s2;
+        }
+        public String toString() {
+            return "[ idx: "+idx+", s1: "+s1+", s2: "+s2+" ]";
         }
     }
+    static int n;
     public int solution(int[][] scores) {
+
         int answer = 0;
-        Data [] datas = new Data[scores.length];
-        int find = scores[0][1] + scores[0][0];
-        for(int i= 0;i<scores.length;i++){
-            datas[i] = new Data(scores[i][0], scores[i][1], i);
+        n = scores.length;
+        Data[] drr = new Data[n];
+        for(int i =0;i<n;i++) {
+            drr[i] = new Data(i, scores[i][0], scores[i][1]);
         }
-        // 결국 두 점수 보다 모두 낮아버리면 답도없음
-        // 그렇지만 한쪽이 반대쪽보다 높은게 있으면 낮은것도 있어야함을 의미함
-        // 즉, 인센티브 대상은 한쪽은 자기보다 높으면서 한쪾은 자기보다 낮아야함
-        Arrays.sort(datas, (a, b)->{
-           if(a.right == b.right){
-               return a.left - b.left; // left에 오름차순
-           } 
-            return b.right - a.right; // right에 대해서 내림차순
-        });
-        // 내림차순 기준으로 순회했을때 left가 max 값보다 작다면, 그건 인센티브 대상에서 제외한다.
-        // 왜냐하면 right가 이미 내림차순인데 left가 갱신되는 max보다 작다면 이것또한 문제이므로
-        int maxLeft = datas[0].left;
-        for(int i = 1;i<datas.length;i++){
-            if(datas[i].left < maxLeft){
-                if(datas[i].idx == 0){
-                    return -1;
-                }
-                datas[i].hap = -1; // 등수계산에서 제외시키기
-            }else{
-                maxLeft = Math.max(maxLeft, datas[i].left);
-            }
-        }
-        Arrays.sort(datas, (a, b)->{
-           return b.hap - a.hap; 
-        });
-        answer = 1;
-        for(int i = 0;i<datas.length;i++){
-            if(datas[i].hap > find){
-                answer++;
-            }else{
-                break;
-            }
-        }
+
         
-        return answer;
+        Arrays.sort(drr, (a, b) -> {
+           if (a.s1 == b.s1) {
+               return a.s2 - b.s2;
+           }
+            return b.s1 - a.s1;
+        });
+        
+        PriorityQueue<Data> pq = new PriorityQueue<>((a, b) -> {
+            return (b.s1 + b.s2) - (a.s1 + a.s2);
+        });
+        int minS2 = drr[0].s2;
+        pq.add(drr[0]);
+        for(int i  = 1;i<drr.length;i++) {
+            if (minS2 > drr[i].s2) {
+                continue;
+            } else {
+                // Math.min으로 하면 안되는게, 하나라도 작아지면 안됨.
+                minS2 = Math.max(drr[i].s2, minS2);
+                pq.add(drr[i]);
+            }
+        }
+        int rank = 0;
+        int max = 211111;
+        int cnt = 1;
+        while(!pq.isEmpty()) {
+            Data now = pq.peek();
+            int sum = now.s1 + now.s2;
+            if (max == sum) {
+                cnt++;
+            } else if (max > sum) {
+                rank += cnt;
+                cnt = 1;
+                max = sum;
+            }
+            
+            if (now.idx == 0) {
+                return rank;
+            }
+            pq.poll();
+            
+        }
+        return -1;
     }
 }

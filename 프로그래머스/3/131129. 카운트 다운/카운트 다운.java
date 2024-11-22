@@ -1,64 +1,52 @@
-// 1 ~ 20에 싱글, 더블, 트리플이 있음
-// 상관없이 50점
-// 두 선수가 같은 라운드에 0점을 만들면 싱글 또는 불을 더 많이 던진 선수가 승리, 그마저도 같으면 선공인 선수가 승리
 import java.util.*;
 
-// 최선의 경우 던질 총 다트의수, 싱글 또는 불을 맞춘 횟수의 합
 class Solution {
+    // 싱글, 더블, 트리플이면 1 ~ 20의 숫자에 배율을 가해짐
+    // 0점이 되는데까지 걸리는 횟수가 가장 적고, 같으면 싱글 또는 불의 합이 큰 사람이 이김
+    // 특정 숫자가 되기까지 걸리는 최소한의 다트합과 싱글 또는 불의 합을 메모하면 되지않을까/
+    static int[][] dp;
     public int[] solution(int target) {
         int[] answer = {};
-        // 젤 큰 점수를 받는 방법은 20점짜리 과녁에 트리플을 맞춘 상황임
-        // target 을 0으로 만드는데 최소한의 개수를 사용하는게 중요하다라
-        // 1 ~ 20의 수로 나누어 떨어진다면, 
-        // 만약에 60점이라면 사실상 20점짜리에 트리플을 맞춘게 젤 좋단 말이지
-        // 1 ~ 20 까지는 싱글이 좋고,
-        // 싱글씩 target에서부터 빼면
-        return bfs(target);
+        dp = new int[2][target + 1]; // 0: 총 다트의 합, 1: 싱글 또는 불 다트의 개수
+        Arrays.fill(dp[0], 987654321);
+        Arrays.fill(dp[1], -987654321);
+        dfs(target, 0, 0);
+        
+        return new int[]{dp[0][target], dp[1][target]};
     }
-    static int[] bfs(int target) {
-        Queue<int[]> queue = new ArrayDeque<>();
-        queue.add(new int[]{target, 0, 0}); // now[1]: 싱글 + 불, now[2]: 총 개수
-        int[] v = new int[100_001];
-        int[] sb = new int[100_001];
+    static int[] dfs(int num, int total, int sbCnt) {
+        if (dp[0][num] != 987654321 && dp[1][num] != -987654321) {
+            return new int[]{dp[0][num], dp[1][num]};
+        }
         
-        Arrays.fill(v, 987654321);
-        v[target] = 0;
-        sb[target] = 987654321;
+        if (num == 0) {
+            return new int[]{0, 0};
+        }
         
-        while(!queue.isEmpty()) {
-            int[] now = queue.poll();
-
-            for(int i = 20; i > 0 ; i--) {
-                for(int j = 1;j<=3;j++) {
-                    if (now[0] < i * j) continue;
-                    if (v[now[0] % (i * j)] > (now[2] + (now[0] / (i * j)))) {
-                        sb[now[0] % (i * j)] = (now[1] + (j == 1 ? now[0] / (i * j) : 0) );
-                        v[now[0] % (i * j)] = (now[2] + (now[0] / (i * j)));
-                        if (sb[0] == 0 && v[0] == 17) {
-                            System.out.println("target: "+now[0]+" i: "+i+" j: "+j+" now[2]: "+now[2]);
-                        }
-                        queue.add(new int[]{now[0] % (i * j), sb[now[0] % (i * j)] ,v[now[0] % (i * j)]});
-                    } else if (v[now[0] % (i * j)] == (now[2] + (now[0] / (i * j)))
-                               && sb[now[0] % (i * j)] < (now[1] + (j == 1 ? now[0] / (i * j) : 0) )
-                    ) {
-                        sb[now[0] % (i * j)] = (now[1] + (j == 1 ? now[0] / (i * j) : 0) );
-                        queue.add(new int[]{now[0] % (i * j), sb[now[0] % (i * j)] ,v[now[0] % (i * j)]});
-                    }
+        if (num - 50 >= 0) {
+            int[] result = dfs(num - 50, total + 1, sbCnt + 1);
+            if (result[0] + 1 < dp[0][num]) {
+                dp[0][num] = result[0] + 1;
+                dp[1][num] = result[1] + 1;
+            } else if (result[0] + 1 == dp[0][num] && dp[1][num] < result[1] + 1) {
+                dp[1][num] = result[1] + 1;
+            }
+        }
+        
+        for(int i = 20;i > 0; i--) {
+            for(int j = 3;j > 0;j--) {
+                int t = i * j;
+                if (num < t) continue;
+                int[] result = dfs(num - t, total + 1, sbCnt + (j == 1 ? 1 : 0));
+                if (result[0] + 1 < dp[0][num]) {
+                    dp[0][num] = result[0] + 1;
+                    dp[1][num] = result[1] + (j == 1 ? 1 : 0);
+                } else if (result[0] + 1 == dp[0][num] && dp[1][num] < result[1] + (j == 1 ? 1 : 0)) {
+                    dp[1][num] = result[1] + (j == 1 ? 1 : 0);
                 }
             }
-            
-            if (now[0] >= 50 && v[now[0] % 50] > (now[2] + (now[0] / 50))) {
-                
-                sb[now[0] % 50] = now[1] + (now[0] / 50);
-                v[now[0] % 50] = now[2] + (now[0] / 50);
-                queue.add(new int[]{now[0] % 50, sb[now[0] % 50], v[now[0] % 50]});
-            } else if (now[0] >= 50 && v[now[0] % 50] == (now[2] + (now[0] / 50)) && sb[now[0] % 50] < (now[1] + (now[0] / 50))) {
-                sb[now[0] % 50] = now[1] + (now[0] / 50);
-                queue.add(new int[]{now[0] % 50, sb[now[0] % 50], v[now[0] % 50]});
-            }
-            
-            
         }
-        return new int[]{v[0], sb[0]};
+        return new int[]{dp[0][num], dp[1][num]};
+        
     }
 }

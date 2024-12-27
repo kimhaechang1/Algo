@@ -1,121 +1,71 @@
-import java.util.*;
-import java.io.*;
+// 격자 바깥으로 나갈 수 없음
+// 총 거리가 k여야 하며, 같은격자를 두번이상 방문해도 됨 -> k번째일 때 r,c에 도착해있어야 하는듯
+// 상하 좌우 이동임
+// 문자열이 사전 순으로 빠른 경로로 탈출해야함
+// d < l < r < u 순서임
 
-// 2023 12 31 2:50
-// 2023 12 31 5:20
+
+// 아래로 갈수 있으면 제일 좋고, 다음 왼쪽, 다음 오른쪽, 다음 위 순서임
+// 최단거리로 내려갈 수 있는 칸수를 k에서 뺏을 때, 남은 칸 수가 홀수면 갈 수 없음
+// 왜냐하면 좌우 반복 혹은 상하 반복 등의 행위로 k번째일 때 딱 목적지에 도착해야 함
+// 거리상 애초에 k번 만큼 갈 수 없는 경우에서는 제외해야함
+import java.util.*;
 
 class Solution {
-    static String resValue;
-    static int [] dy = {-1,1,0,0};
-    static int [] dx = {0,0,-1,1};
-    static boolean [][][] v;
-    static char [] res;
-    static boolean isFind;
-    static void dfs(int depth, int n, int m, int y, int x, int r, int c, int k){
-        if(isFind){
-            return;
-        }
-        if((Math.abs(r - y) + Math.abs(c - x)) > k - depth) return;
-        if(depth == k){
-            if(y == r && x == c){
-                isFind = true;
-                StringBuilder sb = new StringBuilder();
-                for(char ch : res){
-                    sb.append(ch);
-                }
-                resValue = sb.toString();
-                
+    static int N;
+    static int M;
+    static int K;
+    static String answer;
+    static boolean find;
+    static int[] dy = {0,-1,1,0};
+    static int[] dx = {1,0,0,-1};
+    public String solution(int n, int m, int x, int y, int r, int c, int k) {        
+        int totalCnt = Math.abs(x - r) + Math.abs(y - c);
+        
+        if (k < totalCnt) return "impossible";
+        if (((totalCnt - k) & 1) == 1) return "impossible";
+        N = n;
+        M = m;
+        K = k;
+        answer = null;
+        find = false;
+        dfs(x, y, r, c, k, -1, new StringBuilder());
+        
+        return answer;
+    }
+    static void dfs(int x, int y, int r, int c, int depth, int prevDir, StringBuilder sb) {
+        if (depth < 0 || find) return;
+        int remain = Math.abs(x - r) + Math.abs(y - c);
+        if (((depth - remain) & 1) == 1) return;
+        if (remain > depth) return;
+        if (depth == 0 && x == r && y == c) {
+            if (answer == null || sb.toString().compareTo(answer) < 0) {
+                find = true;
+                answer = sb.toString();
             }
             return;
         }
-        // d l r u : 하 좌 우 상
         
         
-        if(!isFind && !OOB(y + dy[1],x + dx[1],n,m) && !v[y + dy[1]][x+dx[1]][depth+1]){
-            char temp = res[depth];
-            res[depth] = 'd';
-            y = y + dy[1];
-            x = x + dx[1];
-            depth += 1;
-            v[y][x][depth] = true;
-            dfs(depth, n, m, y, x, r, c, k);
-            v[y][x][depth] = false;
-            depth -=1;
-            y = y - dy[1];
-            x = x - dx[1];
-            res[depth] = temp;
+        for(int dir = 0; dir < 4; dir++) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+            if (nx > N || nx <= 0 || ny > M || ny <= 0) continue;
+            sb.append(getDir(dir));
+            dfs(nx, ny, r, c, depth - 1, dir, sb);
+            sb.delete(sb.length() - 1, sb.length());
         }
-        if(!isFind && !OOB(y + dy[2],x + dx[2],n,m)  && !v[y + dy[2]][x+dx[2]][depth+1]){
-            char temp = res[depth];
-            res[depth] = 'l';
-            y = y + dy[2];
-            x = x + dx[2];
-            v[y][x][depth] = true;
-            
-            depth += 1;
-            dfs(depth, n, m, y, x, r, c, k);
-            depth -= 1;
-            v[y][x][depth] = false;
-            
-            y = y - dy[2];
-            x = x - dx[2];
-            res[depth] = temp;
-        }
-        if(!isFind && !OOB(y + dy[3],x + dx[3],n,m)  && !v[y + dy[3]][x+dx[3]][depth+1]){
-            char temp = res[depth];
-            res[depth] = 'r';
-            y = y + dy[3];
-            x = x + dx[3];
-            depth += 1;
-            v[y][x][depth] = true;
-            dfs(depth, n, m, y, x, r, c, k);
-            v[y][x][depth] = false;
-            depth -= 1;
-            y = y - dy[3];
-            x = x - dx[3];
-            res[depth] = temp;
-        }
-
-        if(!isFind && !OOB(y + dy[0],x + dx[0],n,m)  && !v[y + dy[0]][x+dx[0]][depth+1]){
-            char temp = res[depth];
-            res[depth] = 'u';
-            y = y + dy[0];
-            x = x + dx[0];
-            depth += 1;
-            v[y][x][depth] = true;
-            dfs(depth, n, m, y, x, r, c, k);
-            v[y][x][depth] = false;
-            depth -= 1;
-            y = y - dy[0];
-            x = x - dx[0];
-            res[depth] = temp;
-        }
-        
     }
-    public static String solution(int n, int m, int y, int x, int r, int c, int k) {
-        isFind = false;
-        String answer = "";
-        resValue = "";
-        v = new boolean[n][m][k+1];
-        res = new char[k];
-        int dis = Math.abs((y - 1) - (r - 1)) + Math.abs((x - 1) - (c - 1));
-        if(dis > k || ((k-dis)) % 2 == 1){
-            // 이동에 제한수치 보다 최단거리가 더 길때
-            // 그리고 최단거리까지 갔을때 남은 이동가능한 횟수가 홀수인 경우
-            // 홀수면 안되는 이유가 그기서부터는 좌우 반복이거나 위아래 반복해야하는데 홀수면 되돌아 갈 수 없기때문
-            answer = "impossible";
-        }else{
-            dfs(0, n, m, y-1, x-1, r-1, c-1, k);    
-        }
-        answer = has(resValue) ? resValue : "impossible";
-        return answer;
+    static String getDir(int dir) {
+        if (dir == 0) return "d";
+        if (dir == 1) return "l";
+        if (dir == 2) return "r";
+        else return "u";
     }
-    static boolean OOB(int y, int x, int n, int m){
-        return y >= n || y < 0 || x >= m || x < 0;
+    static String reverseDir(int dir) {
+        if (dir == 0) return "u";
+        if (dir == 1) return "r";
+        if (dir == 2) return "l";
+        else return "d";
     }
-    static boolean has(String str){
-        return str!=null && !"".equals(str);
-    }
-
-    
 }

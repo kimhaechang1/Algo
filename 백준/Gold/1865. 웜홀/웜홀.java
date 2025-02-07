@@ -71,10 +71,8 @@ public class Main {
         for(int i = 0; i < w; i++) {
             edges.add(new Edge(arr2[i][0], arr2[i][1], -arr2[i][2]));
         }
-        for(int i = 1; i < n + 1; i++) {
-            if (bellmanFord(i, edges)) {
-                return "YES";
-            }
+        if (bellmanFord(1, edges)) {
+            return "YES";
         }
         return "NO";
     }
@@ -82,12 +80,17 @@ public class Main {
     boolean bellmanFord(int startNode, ArrayList<Edge> edges) {
         int[] cost = new int[n + 1];
         Arrays.fill(cost, 987654321);
-        cost[startNode] = 0;
+        // 벨만 - 포드는 어떤 시작점에서 부터 시작하는 음수사이클을 찾는다.
+        // 어떤 노드로부터 음수 사이클이 존재하는지 여부는 시작노드가 달라야하지만
+        // 그래프 내에 음수사이클이 존재하는지 여부를 검사하는건 벨만포드 한번이면 될거다.
+        // 주의 할 점으로, 모든 노드가 연결되어있다는 보장이 없다면, 분명히 시작점으로 잡은것이 끊겨 있을수도 있다.
+        // 대신 나머지 간선들은 충분히 벨만포드를 수행하여야 한다. 따라서 음수 사이클 존재판정만 하려면 INF 검사를 빼야 한다.
+
         boolean isUpdate = false;
         for(int i = 0; i < n - 1; i++) {
             isUpdate = false;
             for(Edge edge: edges) {
-                if (cost[edge.s] != 987654321 && cost[edge.e] > cost[edge.s] + edge.c) {
+                if (cost[edge.e] > cost[edge.s] + edge.c) {
                     cost[edge.e] = cost[edge.s] + edge.c;
                     isUpdate = true;
                 }
@@ -97,7 +100,7 @@ public class Main {
         // 마지막까지 업데이트가 발생했다면, 검사해봐야 하는것
         if (isUpdate) {
             for(Edge edge: edges) {
-                if (cost[edge.s] != 987654321 && cost[edge.e] > cost[edge.s] + edge.c) {
+                if (cost[edge.e] > cost[edge.s] + edge.c) {
                     return true;
                 }
             }

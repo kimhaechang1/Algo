@@ -90,6 +90,7 @@ public class Main {
                         if (dest.node.containsKey(target)) {
                             next.fail = dest.node.get(target);
                         } else {
+                            // 실패함수를 결국 root 를 제외하고 못찾았으면 root로 연결해야함
                             next.fail = this.root;
                         }
                     }
@@ -106,13 +107,12 @@ public class Main {
             for(char c: chars) {
                 while(current != this.root && !current.node.containsKey(c)) {
                     current = current.fail;
-                    if(current.output) return true;
                 }
                 if (current.node.containsKey(c)) {
                     current = current.node.get(c);
-                    if(current.output) return true;
-                } else {
-                    current = root;
+                }
+                if (current.output) {
+                    return true;
                 }
             }
             return false;

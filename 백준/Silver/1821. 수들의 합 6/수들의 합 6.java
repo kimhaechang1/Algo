@@ -11,7 +11,7 @@ public class Main {
     static int f;
     static int[] result;
     static boolean[] v;
-    static int[] ans;
+    static boolean flag;
     Main() {
         bf = new BufferedReader(new InputStreamReader(System.in));
     }
@@ -29,21 +29,20 @@ public class Main {
         int[] nums = new int[n];
         result = new int[n];
         v = new boolean[n];
-        ans = new int[n];
+        flag = false;
         for(int i = 0; i < n; i ++) {
             nums[i] = i + 1;
-            ans[i] = n;
         }
         dfs(nums, 0);
-        StringBuilder sb = new StringBuilder();
-        for(int a: ans) sb.append(a).append(" ");
-        System.out.println(sb);
-
     }
     void dfs(int[] arr, int depth) {
+        if (flag) return;
         if (depth == n) {
-            if (go(result) && compare(result)) {
-                for(int i = 0 ; i< n ;i++) ans[i] = result[i];
+            if (go(result)) {
+                StringBuilder sb = new StringBuilder();
+                for(int a: result) sb.append(a).append(" ");
+                System.out.print(sb);
+                flag = true;
             }
             return;
         }
@@ -53,6 +52,7 @@ public class Main {
             v[i] = true;
             result[depth] = arr[i];
             dfs(arr, depth + 1);
+            if (flag) return;
             v[i] = false;
         }
     }
@@ -65,16 +65,6 @@ public class Main {
             }
         }
         return copy[0] == f;
-    }
-
-    boolean compare(int[] arr) {
-
-        for(int i = 0; i < n; i++) {
-            if (arr[i] > ans[i]) return false;
-            if (arr[i] == ans[i]) continue;
-            if (arr[i] < ans[i]) return true;
-        }
-        return true;
     }
 
     void testCase() throws Exception {

@@ -35,6 +35,9 @@ public class Main {
         for(int i = 0;i < n; i++) {
             for(int j = i + 1; j < n; j++) {
                 if (lines[i][0] > lines[j][1] || lines[i][1] < lines[j][0]) continue;
+                // 멍청했다. 어짜피 겹친다의 기준은 무엇이 먼저 오든 상관없지만
+                // 최소보다도 끝점이 더 작거나 최대보다도 시작점이 더 큰경우가 바로 절대 겹치지 않는 경우다.
+                // 이 조건은 선분의 두 점을 s, e 라고 했을 때, s < e 가 항상 만족하는경우 조건으로 사용된다.
                 vals[i][j] = 1;
                 vals[j][i] = 1;
             }

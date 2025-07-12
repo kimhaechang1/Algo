@@ -28,17 +28,11 @@ public class Main {
     	// 퍼즐의 조각역시 정사각형 모양이다.
     	// 두 퍼즐의 퍼즐조각이 같은 격자에서 만나지 않도록 배치하여 하나의 액자에 담는 방법중에 가장 적은 비용
     	
-    	// 두 격자모두 최대 50*50으로 올 수 있음
-    	
-    	// 그러면 하나를 고정시켜놓고 다른하나를 쭉 돌면서 격자칸에 겹치는게 없을때 마다 가로 세로 길이 계산하면 되지 않을까
-    	// 돌리기 편할라면 정사각형인게 좋으니까
-    	// 어짜피 배열자체도 별로안크고, 그러면 돌릴 녀석과 고정시킬 녀석을 나눠봤을 때,
-    	
-    	// 고정시킬녀석은 돌릴녀석이 최대 50*50이니까 서로 아에 딱붙이는 경우만 생각한다 하면 150*150 에 가운데에 고정시킬 녀석을 배치해야한다.
+    	// 하나를 고정시켜놓고 다른하나를 돌려가며 해도 시간초과가 나지않을것 같다.
+    	// 문제는 돌릴 녀석이 직사각형이란것만 주의하면 된다.
     	
     	answer = Integer.MAX_VALUE;
     	
-//    	 100 * 100 * 50 * 50 = 2500 0000
     	for(int k = 0; k < 4; k++) {
     		int[][] main = new int[n1 + n2 * 2][m1 + m2 * 2];
     		for(int i = 0; i < n1; i ++) { 
@@ -46,7 +40,6 @@ public class Main {
     				main[i + n2][j + m2] = map1[i][j];
     			}
     		}
-//    		printBoard(main);
     		for(int i = 0; i < main.length - n2; i++) {
     			for(int j = 0; j < main[i].length - m2; j++) {
     				go(i, j, main);
@@ -70,9 +63,7 @@ public class Main {
     	int temp = n2;
     	n2 = m2;
     	m2 = temp;
-//    	printBoard(rotated);
     	map2 = new int[n2][m2];
-//    	System.out.println("n2: "+n2+ " m2: "+m2);
     	for(int i = 0; i < n2; i++) {
     		for(int j = 0; j < m2; j++) {
     			map2[i][j] = rotated[i][j];
@@ -82,16 +73,13 @@ public class Main {
     }
     
     void go(int sy, int sx, int[][] main) {
-//    	printBoard(map2);
     	for(int i = sy; i < sy + n2; i++) {
     		for(int j = sx; j < sx + m2; j++) {
-//    			System.out.println("ry: "+(i - sy) +" rx: "+ (j - sx) +" y: "+i+" x: "+j);
     			if (map2[i - sy][j - sx] == 1 && main[i][j] == 1) {
     				return;
     			}
     		}
     	}
-    	//draw(main, sy, sx);
     	
 		int y1 = Math.min(sy, n2);
 		int x1 = Math.min(sx, m2);
